@@ -1,0 +1,14 @@
+1. 팀 프로젝트
+
+2. 제약 조건
+	- 사용 필수
+	1. github
+	2. draw.io - 모델링 필수
+	3. MVC + DAO + Entity
+	4. 발표 자료 구성
+		notion or github readme.md 둘 중 하나로
+	
+3. table 생성 관련해서 사전에 생성하고 작업하는게 현업에서 싫어하진 않음 ~none
+	
+	*. 입출력 IO에 에너지 쏟지 마시길
+	
