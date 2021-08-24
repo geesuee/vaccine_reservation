@@ -1,10 +1,16 @@
 package vaccine.model.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,23 +21,28 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@Entity
+@NamedQuery(query="select v from Vaccine v where v.vaccineName=:name", name="Vaccine.findByVaccineName")
+@Entity(name="Vaccine")
 public class Vaccine {
-	
 	@Id
-	private Long id;
-	
-	private String name;
+	@Column(name="name")
+	private String vaccineName;
 	
 	@Column(name="target_age")
-	private Integer targetAge;
+	private int targetAge;
 	
-	private Integer period;
+	private int period;
 	
 	private String platform;
 	
 	private String temperature;
 	
-	private String storage;
+	private int storage;
+
+	@Override
+	public String toString() {
+		return "[백신 = " + vaccineName + "], [접종 연령 = " + targetAge + "세 이상], [접종 간격 = " + period + "일], [플랫폼 = "
+				+ platform + "], [보관 온도 = " + temperature + "], [보관 기간 = " + storage + "]";
+	}
 	
 }
