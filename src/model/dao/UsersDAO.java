@@ -17,8 +17,28 @@ import model.entity.Users;
 import util.PublicCommon;
 
 public class UsersDAO {
+	private static UsersDAO instance = new UsersDAO();
+
+	private UsersDAO() {};
+
+	public static UsersDAO getInstance() {
+		return instance;
+	}
+	
+	/** 
+	 * UserDAO
+	 * - getNextVaccineDate
+	 * - getUserNextVaccineDate
+	 * - (private) nextVaccineDate
+	 * - getUser
+	 * - (private) getUserById
+	 * - deleteUser
+	 * - updateUserDate
+	 * - updateUserAdd
+	 */
 	
 	// 1차 접종일로 2차 접종일 계산해서 반환하는 메소드
+	// ** 아래 메소드(nextVaccineDate)랑 겹치는듯?
 	public static String getNextVaccineDate(String date1, int period) {
 		LocalDate dateOne = LocalDate.parse(date1, DateTimeFormatter.BASIC_ISO_DATE);
 		LocalDate dateTwo = dateOne.plusDays(period);
@@ -26,9 +46,7 @@ public class UsersDAO {
 		return dateTwo.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 	}
 
-	/**
-	 * 영훈님 다음 접종일 가져오기
-	 */	
+
 	public static Users getUserNextVaccineDate(int idNum) {
 		EntityManager em = PublicCommon.getEntityManager();
 		Users user = em.find(Users.class, idNum);
@@ -50,9 +68,7 @@ public class UsersDAO {
 		}
 	}
 
-	/**
-	 * 영훈님 다음 접종일 계산
-	 */	
+	
 	private static Users nextVaccineDate(Users user) throws ParseException {
 		SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
 		String userName = user.getUserName();
@@ -82,14 +98,6 @@ public class UsersDAO {
 		}
 	}
 
-	/** 
-	 * UserDAO
-	 * - getUser
-	 * - (private) getUserById
-	 * - deleteUser
-	 * - updateUserDate
-	 * - updateUserAdd
-	 */
 	public static Users getUser(String name, int idNum) {
 		EntityManager em = PublicCommon.getEntityManager();
 

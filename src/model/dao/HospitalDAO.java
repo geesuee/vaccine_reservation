@@ -19,7 +19,22 @@ public class HospitalDAO {
 		return instance;
 	}
 	
+	/**
+	 * Hospital DAO 
+	 * - notExistHospital
+	 * 
+	 * - getAllHospital
+	 * - getHospital
+	 * - getLocation
+	 * - getHospitalVaccine
+	 * - addHospital
+	 * - updateHospitalLocation
+	 * - updateHospitalAllVaccine
+	 * - updateHospitalVaccine
+	 * - deleteHospital
+	 */
 	//병원 유무
+	//Exception처리 - Service?
 	public void notExistHospital(String hospitalName) throws NotExistException{
 		Hospital hos = getHospital(hospitalName);
 		if(hos == null) {
@@ -150,7 +165,7 @@ public class HospitalDAO {
 	}
 	
 	//병원 이름으로 지역 수정
-	public boolean updateLocation(String hospitalName, String location) {
+	public boolean updateHospitalLocation(String hospitalName, String location) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		boolean result = false;

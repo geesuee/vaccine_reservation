@@ -13,16 +13,25 @@ import util.PublicCommon;
 import view.EndView;
 
 public class VaccineDAO {
-	/*
+	private static VaccineDAO instance = new VaccineDAO();
+
+	private VaccineDAO() {};
+
+	public static VaccineDAO getInstance() {
+		return instance;
+	}
+	
+	
+	/**
 	 * VaccineDAO 
-	 * -addVaccine 
-	 * -getAllVaccine
-	 * -getVaccine 
-	 * -findByVaccineName
-	 * -findByVaccineTagetAge
-	 * -updateVaccine 
-	 * -updateVaccineAge
-	 *-deleteVaccine
+	 * - addVaccine 
+	 * - getAllVaccine
+	 * - getVaccine 
+	 * - findByVaccineName
+	 * - findByVaccineTagetAge
+	 * - updateVaccine 
+	 * - updateVaccineAge
+	 * - deleteVaccine
 	 */
 	public static Vaccine addVaccine(Vaccine vaccine) {
 		EntityManager em = PublicCommon.getEntityManager();
