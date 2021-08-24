@@ -11,30 +11,26 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import org.junit.jupiter.api.Test;
-
 import model.entity.Users;
 import util.PublicCommon;
 
 public class UsersDAO {
-	private static UsersDAO instance = new UsersDAO();
-
-	private UsersDAO() {};
-
-	public static UsersDAO getInstance() {
-		return instance;
-	}
 	
 	/** 
-	 * UserDAO
+	 * UsersDAO
 	 * - getNextVaccineDate
 	 * - getUserNextVaccineDate
 	 * - (private) nextVaccineDate
+	 * 
 	 * - getUser
 	 * - (private) getUserById
-	 * - deleteUser
+	 * 
+	 * - createUser -> addUser
+	 * 
 	 * - updateUserDate
-	 * - updateUserAdd
+	 * - updateUserAddress
+	 * 
+	 * - deleteUser
 	 */
 	
 	// 1차 접종일로 2차 접종일 계산해서 반환하는 메소드
@@ -46,7 +42,7 @@ public class UsersDAO {
 		return dateTwo.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 	}
 
-
+	//영훈님
 	public static Users getUserNextVaccineDate(int idNum) {
 		EntityManager em = PublicCommon.getEntityManager();
 		Users user = em.find(Users.class, idNum);
@@ -68,7 +64,7 @@ public class UsersDAO {
 		}
 	}
 
-	
+	//영훈님
 	private static Users nextVaccineDate(Users user) throws ParseException {
 		SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
 		String userName = user.getUserName();
@@ -98,47 +94,61 @@ public class UsersDAO {
 		}
 	}
 
+	
 	public static Users getUser(String name, int idNum) {
 		EntityManager em = PublicCommon.getEntityManager();
-
-		List<Users> userList = em.createNamedQuery("Users.findByUserName").setParameter("name", name).getResultList();
-
-		em.close();
-		em = null;
-
-		if(userList.size() == 1) {
-			return userList.get(0);
-		} else {
-			return getUserById(idNum);
+		
+		try {
+			List<Users> userList = em.createNamedQuery("Users.findByUserName").setParameter("name", name).getResultList();
+			
+			if(userList.size() == 1) {
+				return userList.get(0);
+			} else {
+				return getUserById(idNum);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			em.close();
+			em = null;
 		}
+		return null;
 	}
 
 
 	private static Users getUserById(int idNum) {
 		EntityManager em = PublicCommon.getEntityManager();
+		
+		try {
+			Users user = (Users) em.createNamedQuery("Users.findByIdNum").setParameter("id", idNum).getSingleResult();
 
-		Users user = (Users) em.createNamedQuery("Users.findByIdNum").setParameter("id", idNum).getSingleResult();
-
-		em.close();
-		em = null;
-
-		if(user != null) {
-			return user;
-		} 
+			if(user != null) {
+				return user;
+			} else {
+				return null;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			em.close();
+			em = null;
+		}
 		return null;
 	}
 
 
-	public static boolean createUser(Users user) {
+	public static boolean addUser(Users user) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
-
+		boolean result = false;
+		
 		tx.begin();
 
 		try {
 			em.persist(user);
+			
 			tx.commit();
-			return true;
+			result = true;
 		}catch(Exception e) {
 			tx.rollback();
 			e.getStackTrace();
@@ -146,41 +156,21 @@ public class UsersDAO {
 			em.close();
 			em = null;
 		}
-		return false;
-	}
-
-
-	public static boolean deleteUser(int idNum) {
-		EntityManager em = PublicCommon.getEntityManager();
-		EntityTransaction tx = em.getTransaction();
-
-		tx.begin();
-
-		try {
-			Users user = (Users) em.createNamedQuery("Users.findByIdNum").setParameter("id", idNum).getSingleResult();
-			em.remove(user);
-
-			tx.commit();
-			return true;
-		}catch(Exception e) {
-			tx.rollback();
-			e.getStackTrace();
-		}finally {
-			em.close();
-			em = null;
-		}
-		return false;
+		
+		return result;
 	}
 
 
 	public static boolean updateUserDate(int idNum, int dateNum, String date) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
-
+		boolean result = false;
+		
 		tx.begin();
 
 		try {
 			Users user = (Users) em.createNamedQuery("Users.findByIdNum").setParameter("id", idNum).getSingleResult();
+			
 			LocalDate todaysDate = LocalDate.now();
 			LocalDate newDate = LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE);
 
@@ -195,10 +185,11 @@ public class UsersDAO {
 						user.setDate2(getNextVaccineDate(user.getDate1(), user.getVaccine().getPeriod()));
 
 						tx.commit();
-						return true;
-					}else {  // 1차 접종 날짜가 이미 지났거나, 새로운 날짜가 오늘보다 이전일 경우
-						return false;
+						result = true;
 					}
+//					else {  // 1차 접종 날짜가 이미 지났거나, 새로운 날짜가 오늘보다 이전일 경우
+//						return false;
+//					}
 
 				//2차 접종일 변경
 				}else if(dateNum == 2) {
@@ -208,17 +199,19 @@ public class UsersDAO {
 						user.setDate2(newDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
 
 						tx.commit();
-						return true;
-					}else {  // 2차 접종 날짜가 이미 지났거나,  기존 예약일보다 전이거나, 새로운 날짜가 오늘보다 이전이거나, 1차 접종으로부터 3달 넘게 지난 날일 경우
-						return false;  
+						result = true;
 					}
-
-				}else {  // 날짜 선택 값을 잘 못 넣은 경우
-					return false;
+//					else {  // 2차 접종 날짜가 이미 지났거나,  기존 예약일보다 전이거나, 새로운 날짜가 오늘보다 이전이거나, 1차 접종으로부터 3달 넘게 지난 날일 경우
+//						return false;  
+//					}
+//
+//				}else {  // 날짜 선택 값을 잘 못 넣은 경우
+//					return false;
+//				}
+//
+//			}else {  // idNum으로 찾은 user가 null일 경우
+//				return false;
 				}
-
-			}else {  // idNum으로 찾은 user가 null일 경우
-				return false;
 			}
 
 		}catch (Exception e) {
@@ -228,22 +221,26 @@ public class UsersDAO {
 			em.close();
 			em = null;
 		}
-		return false;
+		return result;
 	}
 
 
 	public static boolean updateUserAddress(int idNum, String address) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
-
+		boolean result = false;
+		
 		tx.begin();
 
 		try {
 			Users user = (Users) em.createNamedQuery("Users.findByIdNum").setParameter("id", idNum).getSingleResult();
-			user.setUserAddress(address);
-
+			
+			if(user != null) {
+				user.setUserAddress(address);
+				result = true;
+			}
+			
 			tx.commit();
-			return true;
 		}catch(Exception e) {
 			tx.rollback();
 			e.getStackTrace();
@@ -251,6 +248,35 @@ public class UsersDAO {
 			em.close();
 			em = null;
 		}
-		return false;
+		
+		return result;
+	}
+	
+	
+	public static boolean deleteUser(int idNum) {
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		boolean result = false;
+		
+		tx.begin();
+
+		try {
+			Users user = (Users) em.createNamedQuery("Users.findByIdNum").setParameter("id", idNum).getSingleResult();
+			
+			if(user != null) {
+				em.remove(user);
+				result = true;
+			}
+
+			tx.commit();
+		}catch(Exception e) {
+			tx.rollback();
+			e.getStackTrace();
+		}finally {
+			em.close();
+			em = null;
+		}
+		
+		return result;
 	}
 }

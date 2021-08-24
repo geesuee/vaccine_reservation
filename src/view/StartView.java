@@ -1,15 +1,15 @@
 package view;
 
-import controller.Controller;
-import model.dao.UsersDAO;
-import model.entity.Hospital;
-import model.entity.Users;
-import model.entity.Vaccine;
-
 public class StartView {
 	
 	
 	public static void main(String[] args) {
+		
+		/**
+		 * 여기도 나중에 다 같이 고쳐요!
+		 */
+		
+		
 //		System.out.println("=== user 검색 ===");
 //		Controller.getUser("배지수", 971202);
 //		
@@ -65,9 +65,9 @@ public class StartView {
 //		System.out.println("\n=== 접종 예약 수정 성공 케이스 ===");
 //		Controller.updateUserDate(971202, 2, "20210918");
 //		Controller.nextVaccineDate(971202);
-		
-		System.out.println("\n=== 사용자 주소 수정 update ===");
-		Controller.updateUserAddress(971202, "마포구");
+//		
+//		System.out.println("\n=== 사용자 주소 수정 update ===");
+//		Controller.updateUserAddress(971202, "마포구");
 	}
 
 }

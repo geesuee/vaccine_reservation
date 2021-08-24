@@ -1,6 +1,5 @@
 package view;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import model.entity.Hospital;
@@ -8,6 +7,18 @@ import model.entity.Users;
 import model.entity.Vaccine;
 
 public class EndView {
+
+	// 메소드명 방식 통일 필요
+	// 공통으로 쓸 수 있는 메소드 통합 필요
+	
+	/**
+	 * Users EndView
+	 * - showNextVaccineDate
+	 * - showUser
+	 * - errorMessage (공통)
+	 * - showResult (공통 - 아직 통합 전)
+	 */
+	
 	public static void showNextVaccineDate(Users user) {
 
 		System.out.println(user.getUserName()+"님 1차 백신 날짜 :"+user.getDate1() +"2차 백신 예정일은 :" +user.getDate2()+" 입니다.");
@@ -26,13 +37,12 @@ public class EndView {
 	}
 
 
-	/*EndView +VaccineDAO
-	 * -showNextVaccineDate
-	 * -showVaccinList
-	 * -addVaccineView
-	 * -getVaccine
+	/**
+	 * Vaccine EndView
+	 * - showVaccinList
+	 * - addVaccineView
+	 * - getVaccine
 	 */
-
 
 	public static void showVaccinList(List<Vaccine> allVaccine) {
 		if(allVaccine != null) {
@@ -66,6 +76,18 @@ public class EndView {
 		}
 	}
 	
+	
+	/**
+	 * Hospital EndView
+	 * - hospitalAllView
+	 * - hospitalView
+	 * - insertHospitalView
+	 * - updateHospitalView
+	 * - updateLocationView
+	 * - updateVaccineView
+	 * - deleteSellerView
+	 */
+	
 	//모든 정보 출력
 	public static void hospitalAllView(List<Hospital> hospital) {
 		if (hospital != null) {
@@ -80,22 +102,7 @@ public class EndView {
 			System.out.println("요청하신 정보는 없습니다");
 		}
 	}
-	
-	//모든 정보 출력
-	public static void hospitalAllView(ArrayList<Hospital> hospital) {
-		if (hospital != null) {
-			int length = hospital.size(); // 저장된 데이터 개수 반환
 
-			if (length != 0) {
-				hospital.forEach(v -> System.out.println(v));
-			} else {
-				System.out.println("요청하신 정보는 없습니다");
-			}
-		} else {
-			System.out.println("요청하신 정보는 없습니다");
-		}
-	}
-	
 	//특정 병원 출력
 	public static void hospitalView(Hospital hospital) {
 		if(hospital != null) {

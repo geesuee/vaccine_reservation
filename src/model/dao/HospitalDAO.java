@@ -11,39 +11,43 @@ import model.entity.Hospital;
 import util.PublicCommon;
 
 public class HospitalDAO {
-	private static HospitalDAO instance = new HospitalDAO();
-	
-	private HospitalDAO() {};
-	
-	public static HospitalDAO getInstance() {
-		return instance;
-	}
+//	private static HospitalDAO instance = new HospitalDAO();
+//	
+//	private HospitalDAO() {};
+//	
+//	public static HospitalDAO getInstance() {
+//		return instance;
+//	}
 	
 	/**
 	 * Hospital DAO 
 	 * - notExistHospital
 	 * 
 	 * - getAllHospital
-	 * - getHospital
-	 * - getLocation
-	 * - getHospitalVaccine
+	 * - getHospital -> getHospitalByName
+	 * - getLocation -> getHospitalByLocation
+	 * - getHospitalVaccine -> getHospitalByVaccine
+	 * 
 	 * - addHospital
+	 * 
 	 * - updateHospitalLocation
 	 * - updateHospitalAllVaccine
 	 * - updateHospitalVaccine
+	 * 
 	 * - deleteHospital
 	 */
+	
 	//병원 유무
-	//Exception처리 - Service?
+	//Exception처리를 왜 별도로..?
 	public void notExistHospital(String hospitalName) throws NotExistException{
-		Hospital hos = getHospital(hospitalName);
-		if(hos == null) {
+		Hospital hospital = getHospitalByName(hospitalName);
+		if(hospital == null) {
 			System.out.println("검색한 병원은 존재하지 않습니다");
 		}
 	}
 	
 	//모든 병원 검색
-	public List<Hospital> getAllHospital(){
+	public static List<Hospital> getAllHospital(){
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		List<Hospital> list = null;
@@ -65,7 +69,7 @@ public class HospitalDAO {
 	}
 	
 	//병원 이름으로 병원 검색
-	public Hospital getHospital(String hospitalName) {
+	public static Hospital getHospitalByName(String hospitalName) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		Hospital hospital = null;
@@ -87,7 +91,7 @@ public class HospitalDAO {
 	}
 	
 	//지역으로 병원 검색
-	public Hospital getLocation(String location) {
+	public static Hospital getHospitalByLocation(String location) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		Hospital hospital = null;
@@ -109,7 +113,7 @@ public class HospitalDAO {
 	}
 	
 	//백신이 있는 병원 검색
-	public ArrayList<Hospital> getHospitalVaccine(String vaccineName) {
+	public static ArrayList<Hospital> getHospitalByVaccine(String vaccineName) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		ArrayList<Hospital> list = new ArrayList<>(); 
@@ -139,20 +143,18 @@ public class HospitalDAO {
 	}
 	
 	//새로운 병원 저장
-	public boolean addHospital(Hospital hospital) {
+	public static boolean addHospital(Hospital hospital) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		boolean result = false;
+		
 		tx.begin();
 		
 		try {
 			em.persist(hospital);
 			
-			if(hospital != null) {
-				result = true;
-			}
-			
 			tx.commit();
+			result = true;
 		}catch(Exception e) {
 			tx.rollback();
 			e.printStackTrace();
@@ -163,19 +165,21 @@ public class HospitalDAO {
 		
 		return result;
 	}
+	
 	
 	//병원 이름으로 지역 수정
-	public boolean updateHospitalLocation(String hospitalName, String location) {
+	public static boolean updateHospitalLocation(String hospitalName, String location) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		boolean result = false;
+		
 		tx.begin();
 		
 		try {
-			Hospital hos = em.find(Hospital.class, hospitalName);
+			Hospital hospital = em.find(Hospital.class, hospitalName);
 			
-			if(hos != null) {
-				hos.setLocation(location);
+			if(hospital != null) {
+				hospital.setLocation(location);
 				result = true;
 			}
 			
@@ -190,22 +194,23 @@ public class HospitalDAO {
 		
 		return result;
 	}
+	
 	
 	//병원 이름으로 모든 백신 수량 수정
-	public boolean updateHospitalAllVaccine(String hospitalName, int pfizer, int moderna, int az) {
+	public static boolean updateHospitalAllVaccine(String hospitalName, int pfizer, int moderna, int az) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		boolean result = false;
+		
 		tx.begin();
 		
 		try {
-			Hospital hos = em.find(Hospital.class, hospitalName);
+			Hospital hospital = em.find(Hospital.class, hospitalName);
 			
-			hos.setPfizer(pfizer);
-			hos.setModerna(moderna);
-			hos.setAz(az);
-			
-			if(hos != null) {
+			if(hospital != null) {
+				hospital.setPfizer(pfizer);
+				hospital.setModerna(moderna);
+				hospital.setAz(az);
 				result = true;
 			}
 			
@@ -221,23 +226,25 @@ public class HospitalDAO {
 		return result;
 	}
 	
+	
 	//병원 이름으로 백신 수량 수정
-	public boolean updateHospitalVaccine(String hospitalName, String vaccineName, int num) {
+	public static boolean updateHospitalVaccine(String hospitalName, String vaccineName, int num) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		boolean result = false;
+		
 		tx.begin();
 		
 		try {
-			Hospital hos = em.find(Hospital.class, hospitalName);
+			Hospital hospital = em.find(Hospital.class, hospitalName);
 			
-			if(hos != null) {
+			if(hospital != null) {
 				if(vaccineName.equals("화이자")) {
-					hos.setPfizer(num);
+					hospital.setPfizer(num);
 				}else if(vaccineName.equals("모더나")) {
-					hos.setModerna(num);
+					hospital.setModerna(num);
 				}else if(vaccineName.equals("AZ") | vaccineName.equals("az")) {
-					hos.setAz(num);
+					hospital.setAz(num);
 				}
 				
 				result = true;
@@ -256,17 +263,18 @@ public class HospitalDAO {
 	}
 	
 	//병원 이름으로 병원 삭제
-	public boolean deleteHospital(String hospitalName) {
+	public static boolean deleteHospital(String hospitalName) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		boolean result = false;
+		
 		tx.begin();
 		
 		try {
-			Hospital hos = em.find(Hospital.class, hospitalName);
+			Hospital hospital = em.find(Hospital.class, hospitalName);
 			
-			if(hos != null) {
-				em.remove(hos);
+			if(hospital != null) {
+				em.remove(hospital);
 				result = true;
 			}
 			
