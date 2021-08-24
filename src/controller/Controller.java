@@ -27,7 +27,12 @@ public class Controller {
 	 */
 	public static void getUser(String name, int idNum) {
 		if(name != null && !name.equals("") && (Integer)idNum != null) {
-			EndView.showUser(UsersDAO.getUser(name, idNum));
+			Users user = UsersDAO.getUser(name, idNum);
+			if(user != null) {
+				EndView.showUser(user);
+			}else {
+				EndView.errorMessage("입력하신 정보와 일치하는 접종 예약자 정보가 없습니다.");
+			}
 		}else {
 			EndView.errorMessage("이름과 주민등록번호 앞자리는 null일 수 없습니다.");
 		}
