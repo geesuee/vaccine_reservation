@@ -9,8 +9,8 @@ import model.entity.Vaccine;
 
 public class EndView {
 	public static void showNextVaccineDate(Users user) {
-		
-		System.out.println(user.getUserName()+"�� 1�� ��� ��¥ :"+user.getDate1() +"2�� ��� �������� :" +user.getDate2()+" �Դϴ�.");
+
+		System.out.println(user.getUserName()+"님 1차 백신 날짜 :"+user.getDate1() +"2차 백신 예정일은 :" +user.getDate2()+" 입니다.");
 	}
 
 	public static void errorMessage(String string) {

@@ -47,8 +47,8 @@ public class Users {
 
 	@Override
 	public String toString() {
-		return "[ÁÖ¹Îµî·Ï¹øÈ£ = " + idNum + "], [ÀÌ¸§ = " + userName + "], [³ªÀÌ = " + age + "], [ÁÖ¼Ò = " + userAddress + "], [1Â÷ Á¢Á¾³¯Â¥ = "
-				+ date1 + "], [2Â÷ Á¢Á¾³¯Â¥ = " + date2 + "], [Á¢Á¾ ¹é½Å = " + vaccine.getVaccineName() + "], [Á¢Á¾ º´¿ø = " + hospital.getHospitalName() + "]";
+		return "[ì£¼ë¯¼ë“±ë¡ë²ˆí˜¸ = " + idNum + "], [ì´ë¦„ = " + userName + "], [ë‚˜ì´ = " + age + "], [ì£¼ì†Œ = " + userAddress + "], [1ì°¨ ì ‘ì¢…ë‚ ì§œ = "
+				+ date1 + "], [2ì°¨ ì ‘ì¢…ë‚ ì§œ = " + date2 + "], [ì ‘ì¢… ë°±ì‹  = " + vaccine.getVaccineName() + "], [ì ‘ì¢… ë³‘ì› = " + hospital.getHospitalName() + "]";
 
 	}
 	

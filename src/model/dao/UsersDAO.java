@@ -18,25 +18,25 @@ import util.PublicCommon;
 
 public class UsersDAO {
 	
-	// 1Â÷ Á¢Á¾ÀÏ·Î 2Â÷ Á¢Á¾ÀÏ °è»êÇØ¼­ ¹İÈ¯ÇÏ´Â ¸Ş¼Òµå
+	// 1ì°¨ ì ‘ì¢…ì¼ë¡œ 2ì°¨ ì ‘ì¢…ì¼ ê³„ì‚°í•´ì„œ ë°˜í™˜í•˜ëŠ” ë©”ì†Œë“œ
 	public static String getNextVaccineDate(String date1, int period) {
 		LocalDate dateOne = LocalDate.parse(date1, DateTimeFormatter.BASIC_ISO_DATE);
 		LocalDate dateTwo = dateOne.plusDays(period);
-		
+
 		return dateTwo.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 	}
-	
+
 	/**
-	 * ¿µÈÆ´Ô ´ÙÀ½ Á¢Á¾ÀÏ °¡Á®¿À±â
+	 * ì˜í›ˆë‹˜ ë‹¤ìŒ ì ‘ì¢…ì¼ ê°€ì ¸ì˜¤ê¸°
 	 */	
 	public static Users getUserNextVaccineDate(int idNum) {
 		EntityManager em = PublicCommon.getEntityManager();
 		Users user = em.find(Users.class, idNum);
 		if(user == null) {
-			System.out.println("Á¤º¸°¡ ¾ø½À´Ï´Ù.");
+			System.out.println("ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤.");
 			em.close();
 			em = null;
-			
+
 			return null;
 		}else {
 			try {
@@ -49,9 +49,9 @@ public class UsersDAO {
 			return user;
 		}
 	}
-	
+
 	/**
-	 * ¿µÈÆ´Ô ´ÙÀ½ Á¢Á¾ÀÏ °è»ê
+	 * ì˜í›ˆë‹˜ ë‹¤ìŒ ì ‘ì¢…ì¼ ê³„ì‚°
 	 */	
 	private static Users nextVaccineDate(Users user) throws ParseException {
 		SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
@@ -59,7 +59,7 @@ public class UsersDAO {
 		String VaccineName = user.getVaccine().getVaccineName();
 		String date1 = user.getDate1();
 		String date2 = user.getDate2();
-		
+
 		if(date2 != null || !date2.equals("")) {
 			return user;
 		}else {
@@ -69,19 +69,19 @@ public class UsersDAO {
 			int day = 0;
 			if("az".equals(VaccineName) || "AZ".equals(VaccineName)) {
 				day = 84;
-			}else if("È­ÀÌÀÚ".equals(VaccineName)) {
+			}else if("í™”ì´ì".equals(VaccineName)) {
 				day = 42;
-			}else if("¸ğ´õ³ª".equals(VaccineName)) {
+			}else if("ëª¨ë”ë‚˜".equals(VaccineName)) {
 				day = 42;
 			}else {
-				System.out.println("Àß¸øµÈ ÀÔ·Â");
+				System.out.println("ì˜ëª»ëœ ì…ë ¥");
 			}
 			cal.add(Calendar.DATE,day );
 			user.setDate2(dtFormat.format(cal.getTime()));
 			return user;
 		}
 	}
-	
+
 	/** 
 	 * UserDAO
 	 * - getUser
@@ -92,41 +92,41 @@ public class UsersDAO {
 	 */
 	public static Users getUser(String name, int idNum) {
 		EntityManager em = PublicCommon.getEntityManager();
-		
+
 		List<Users> userList = em.createNamedQuery("Users.findByUserName").setParameter("name", name).getResultList();
-		
+
 		em.close();
 		em = null;
-		
+
 		if(userList.size() == 1) {
 			return userList.get(0);
 		} else {
 			return getUserById(idNum);
 		}
 	}
-	
-	
+
+
 	private static Users getUserById(int idNum) {
 		EntityManager em = PublicCommon.getEntityManager();
-		
+
 		Users user = (Users) em.createNamedQuery("Users.findByIdNum").setParameter("id", idNum).getSingleResult();
-		
+
 		em.close();
 		em = null;
-		
+
 		if(user != null) {
 			return user;
 		} 
 		return null;
 	}
-	
-	
+
+
 	public static boolean createUser(Users user) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
-		
+
 		tx.begin();
-		
+
 		try {
 			em.persist(user);
 			tx.commit();
@@ -140,18 +140,18 @@ public class UsersDAO {
 		}
 		return false;
 	}
-	
+
 
 	public static boolean deleteUser(int idNum) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
-		
+
 		tx.begin();
-		
+
 		try {
 			Users user = (Users) em.createNamedQuery("Users.findByIdNum").setParameter("id", idNum).getSingleResult();
 			em.remove(user);
-			
+
 			tx.commit();
 			return true;
 		}catch(Exception e) {
@@ -163,53 +163,53 @@ public class UsersDAO {
 		}
 		return false;
 	}
-	
+
 
 	public static boolean updateUserDate(int idNum, int dateNum, String date) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
-		
+
 		tx.begin();
 
 		try {
 			Users user = (Users) em.createNamedQuery("Users.findByIdNum").setParameter("id", idNum).getSingleResult();
 			LocalDate todaysDate = LocalDate.now();
 			LocalDate newDate = LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE);
-			
+
 			if(user != null) {
 				LocalDate date1 = LocalDate.parse(user.getDate1(), DateTimeFormatter.BASIC_ISO_DATE);
 				LocalDate date2 = LocalDate.parse(user.getDate2(), DateTimeFormatter.BASIC_ISO_DATE);
-				
-				//1Â÷ Á¢Á¾ÀÏ º¯°æ
+
+				//1ì°¨ ì ‘ì¢…ì¼ ë³€ê²½
 				if(dateNum == 1) {
 					if(date1.isAfter(todaysDate) && newDate.isAfter(date1) && newDate.isAfter(todaysDate)) {
 						user.setDate1(newDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
 						user.setDate2(getNextVaccineDate(user.getDate1(), user.getVaccine().getPeriod()));
-						
+
 						tx.commit();
 						return true;
-					}else {  // 1Â÷ Á¢Á¾ ³¯Â¥°¡ ÀÌ¹Ì Áö³µ°Å³ª, »õ·Î¿î ³¯Â¥°¡ ¿À´Ãº¸´Ù ÀÌÀüÀÏ °æ¿ì
+					}else {  // 1ì°¨ ì ‘ì¢… ë‚ ì§œê°€ ì´ë¯¸ ì§€ë‚¬ê±°ë‚˜, ìƒˆë¡œìš´ ë‚ ì§œê°€ ì˜¤ëŠ˜ë³´ë‹¤ ì´ì „ì¼ ê²½ìš°
 						return false;
 					}
 
-				//2Â÷ Á¢Á¾ÀÏ º¯°æ
+				//2ì°¨ ì ‘ì¢…ì¼ ë³€ê²½
 				}else if(dateNum == 2) {
 					LocalDate maxDate = date1.plusMonths(3);
-					
+
 					if(date2.isAfter(todaysDate) && newDate.isAfter(date2) && newDate.isAfter(todaysDate) && newDate.isBefore(maxDate)) {
 						user.setDate2(newDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-						
+
 						tx.commit();
 						return true;
-					}else {  // 2Â÷ Á¢Á¾ ³¯Â¥°¡ ÀÌ¹Ì Áö³µ°Å³ª,  ±âÁ¸ ¿¹¾àÀÏº¸´Ù ÀüÀÌ°Å³ª, »õ·Î¿î ³¯Â¥°¡ ¿À´Ãº¸´Ù ÀÌÀüÀÌ°Å³ª, 1Â÷ Á¢Á¾À¸·ÎºÎÅÍ 3´Ş ³Ñ°Ô Áö³­ ³¯ÀÏ °æ¿ì
+					}else {  // 2ì°¨ ì ‘ì¢… ë‚ ì§œê°€ ì´ë¯¸ ì§€ë‚¬ê±°ë‚˜,  ê¸°ì¡´ ì˜ˆì•½ì¼ë³´ë‹¤ ì „ì´ê±°ë‚˜, ìƒˆë¡œìš´ ë‚ ì§œê°€ ì˜¤ëŠ˜ë³´ë‹¤ ì´ì „ì´ê±°ë‚˜, 1ì°¨ ì ‘ì¢…ìœ¼ë¡œë¶€í„° 3ë‹¬ ë„˜ê²Œ ì§€ë‚œ ë‚ ì¼ ê²½ìš°
 						return false;  
 					}
-					
-				}else {  // ³¯Â¥ ¼±ÅÃ °ªÀ» Àß ¸ø ³ÖÀº °æ¿ì
+
+				}else {  // ë‚ ì§œ ì„ íƒ ê°’ì„ ì˜ ëª» ë„£ì€ ê²½ìš°
 					return false;
 				}
-				
-			}else {  // idNumÀ¸·Î Ã£Àº user°¡ nullÀÏ °æ¿ì
+
+			}else {  // idNumìœ¼ë¡œ ì°¾ì€ userê°€ nullì¼ ê²½ìš°
 				return false;
 			}
 
@@ -222,8 +222,8 @@ public class UsersDAO {
 		}
 		return false;
 	}
-	
-	
+
+
 	public static boolean updateUserAddress(int idNum, String address) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -245,5 +245,4 @@ public class UsersDAO {
 		}
 		return false;
 	}
-	
 }
