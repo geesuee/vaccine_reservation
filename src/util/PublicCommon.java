@@ -1,4 +1,3 @@
-
 package util;
 
 import javax.persistence.EntityManager;
@@ -6,9 +5,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class PublicCommon {
-	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("oracleDB");
+	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("vaccineDB");
 	
-	//
 	public static EntityManager getEntityManager() {
 		return emf.createEntityManager();
 	}

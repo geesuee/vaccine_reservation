@@ -1,0 +1,21 @@
+1. 팀 프로젝트
+
+2. 제약 조건
+	- 사용 필수
+	1. github
+	2. draw.io - 모델링 필수
+	3. MVC + DAO + Entity
+	4. 발표 자료 구성
+		notion or github readme.md 둘중 하나로 해 주세요
+	
+3. table생성 관련해서 사전에 생성하고 작업하는게 현업에서 싫어하지 않음
+
+4. 적용 안해도 됨
+	- 입출력 IO
+	
+5. 프로젝트 수행 시간
+	- 발표
+	
+	ALTER TABLE APP  ADD FOREIGN KEY (BUILDING_ID) REFERENCES BUILDING  (BUILDING_ID);
+ALTER TABLE APP ADD FOREIGN KEY (APP_ID)  REFERENCES PRICE  (APP_ID);
+ALTER TABLE APP ADD FOREIGN KEY (SELLER_ID) REFERENCES SELLER  (SELLER_ID);

@@ -24,7 +24,6 @@
       </plugin>
     </plugins>
   </build>
-  
   <dependencies>
 		<dependency>
 			<groupId>javax.persistence</groupId>
@@ -78,6 +77,5 @@
 			<name>ORACLE JDBC Repository</name>
 			<url>https://maven.atlassian.com/3rdparty/</url>
 		</repository>
-	</repositories> 
-  
+	</repositories>
 </project>
