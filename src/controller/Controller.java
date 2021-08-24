@@ -1,19 +1,21 @@
 package controller;
 
 import model.dao.UsersDAO;
+import model.dao.VaccineDAO;
 import model.entity.Users;
+import model.entity.Vaccine;
 import view.EndView;
 
 public class Controller {
 	
 	/**
-	 * ¿µÈÆ´Ô ºÎºĞ
+	 * ï¿½ï¿½ï¿½Æ´ï¿½ ï¿½Îºï¿½
 	 */
 	public static void nextVaccineDate(int idNum) {
 		if((Integer)idNum != null) {
 			EndView.showNextVaccineDate(UsersDAO.getUserNextVaccineDate(idNum));
 		}else {
-			EndView.errorMessage("ÁÖ¹Îµî·Ï¹øÈ£ ¾ÕÀÚ¸®´Â nullÀÏ ¼ö ¾ø½À´Ï´Ù.");
+			EndView.errorMessage("ï¿½Ö¹Îµï¿½Ï¹ï¿½È£ ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ nullï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 		}
 	}
 	
@@ -31,58 +33,156 @@ public class Controller {
 			if(user != null) {
 				EndView.showUser(user);
 			}else {
-				EndView.errorMessage("ÀÔ·ÂÇÏ½Å Á¤º¸¿Í ÀÏÄ¡ÇÏ´Â Á¢Á¾ ¿¹¾àÀÚ Á¤º¸°¡ ¾ø½À´Ï´Ù.");
+				EndView.errorMessage("ï¿½Ô·ï¿½ï¿½Ï½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 			}
 		}else {
-			EndView.errorMessage("ÀÌ¸§°ú ÁÖ¹Îµî·Ï¹øÈ£ ¾ÕÀÚ¸®´Â nullÀÏ ¼ö ¾ø½À´Ï´Ù.");
+			EndView.errorMessage("ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½Ö¹Îµï¿½Ï¹ï¿½È£ ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ nullï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 		}
 	}
 	
 	public static void createUser(Users user) {
 		if(user != null) {
 			if(UsersDAO.createUser(user)) {
-				EndView.showResult(user.getUserName() + " ´ÔÀÇ ¹é½Å Á¢Á¾ ¿¹¾àÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.");
+				EndView.showResult(user.getUserName() + " ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 			}else {
-				EndView.errorMessage("Á¢Á¾ ¿¹¾àÀ» ½ÇÆĞÇÏ¿´½À´Ï´Ù.");
+				EndView.errorMessage("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 			}
 		}else {
-			EndView.errorMessage("Á¢Á¾ ¿¹¾àÀÚ Á¤º¸´Â nullÀÏ ¼ö ¾ø½À´Ï´Ù.");
+			EndView.errorMessage("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ nullï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 		}
 	}
 	
 	public static void deleteUser(int idNum) {
 		if((Integer)idNum != null) {
 			if(UsersDAO.deleteUser(idNum)) {
-				EndView.showResult("¹é½Å Á¢Á¾ ¿¹¾à Ãë¼Ò°¡ ¿Ï·áµÇ¾ú½À´Ï´Ù.");
+				EndView.showResult("ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ò°ï¿½ ï¿½Ï·ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 			}else {
-				EndView.errorMessage("Á¢Á¾ ¿¹¾à Ãë¼Ò¸¦ ½ÇÆĞÇÏ¿´½À´Ï´Ù.");
+				EndView.errorMessage("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ò¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 			}
 		}else {
-			EndView.errorMessage("ÁÖ¹Îµî·Ï¹øÈ£ ¾ÕÀÚ¸®´Â nullÀÏ ¼ö ¾ø½À´Ï´Ù.");
+			EndView.errorMessage("ï¿½Ö¹Îµï¿½Ï¹ï¿½È£ ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ nullï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 		}
 	}
 	
 	public static void updateUserDate(int idNum, int dateNum, String date) {
 		if((Integer)idNum != null && (Integer)dateNum != null && date != null && !date.equals("")) {
 			if(UsersDAO.updateUserDate(idNum, dateNum, date)) {
-				EndView.showResult(dateNum + "Â÷ ¹é½Å Á¢Á¾ ÀÏÀÚ°¡ " + date + "·Î ¼öÁ¤µÇ¾ú½À´Ï´Ù.");
+				EndView.showResult(dateNum + "ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú°ï¿½ " + date + "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 			}else {
-				EndView.errorMessage("Á¢Á¾ ¿¹¾à ¼öÁ¤À» ½ÇÆĞÇÏ¿´½À´Ï´Ù.");
+				EndView.errorMessage("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 			}
 		}else {
-			EndView.errorMessage("ÁÖ¹Îµî·Ï¹øÈ£ ¾ÕÀÚ¸®, ¼öÁ¤ÇÒ Á¢Á¾ ¿¹¾à Â÷½Ã, ¼öÁ¤ÇÒ Á¢Á¾ ÀÏÀÚ´Â nullÀÏ ¼ö ¾ø½À´Ï´Ù.");
+			EndView.errorMessage("ï¿½Ö¹Îµï¿½Ï¹ï¿½È£ ï¿½ï¿½ï¿½Ú¸ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú´ï¿½ nullï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 		}
 	}
 	
 	public static void updateUserAddress(int idNum, String address) {
 		if((Integer)idNum != null && address != null && !address.equals("")) {
 			if(UsersDAO.updateUserAddress(idNum, address)) {
-				EndView.showResult("ÁÖ¼Ò ¼öÁ¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.");
+				EndView.showResult("ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 			}else {
-				EndView.errorMessage("ÁÖ¼Ò ¼öÁ¤À» ½ÇÆĞÇÏ¿´½À´Ï´Ù.");
+				EndView.errorMessage("ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 			}
 		}else {
-			EndView.errorMessage("ÁÖ¹Îµî·Ï¹øÈ£ ¾ÕÀÚ¸®, ¼öÁ¤ÇÒ ÁÖ¼Ò Á¤º¸´Â nullÀÏ ¼ö ¾ø½À´Ï´Ù.");
+			EndView.errorMessage("ï¿½Ö¹Îµï¿½Ï¹ï¿½È£ ï¿½ï¿½ï¿½Ú¸ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ nullï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 		}
 	}
+	
+	/* controller + VaccineDAO
+	 * -nextVaccineDate   (userDAO)
+	 * -getAllVaccine
+	 * -addVaccine
+	 * -findByVaccineName
+	 * -findByVaccineTagetAge
+	 * -updateVaccine
+	 * -updateVaccineAge
+	 * -deleteVaccine
+	 */
+
+		public static void getAllVaccine() {
+			try {
+				EndView.showVaccinList(VaccineDAO.getAllVaccine());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		public static void addVaccine() {
+			// ë°ì´í„°ë¥¼ ë°›ì•„ì˜¤ëŠ” ê³³.
+
+//			Scanner sc = new Scanner(System.in);
+//			
+//			System.out.println("ë°±ì‹  ëª…ì„ ì…ë ¥í•˜ì„¸ìš”");
+//			String vaccineName = sc.nextLine();
+//			System.out.println("ë°±ì‹ ì˜ ì ‘ì¢… ì—°ë ¹ì„ ì…ë ¥í•˜ì„¸ìš”");
+//			int targetAge = sc.nextInt();
+//			System.out.println("ë°±ì‹ ì˜ ì ‘ì¢…ê°„ê²©ì„ ì…ë ¥í•˜ì„¸ìš”");
+//			int period = sc.nextInt();
+//			System.out.println("í”Œë«í¼ì„ ì…ë ¥í•˜ì„¸ìš”");
+//			String platform = sc.nextLine();
+//			System.out.println("ë°±ì‹ ì˜ ë³´ê´€ ì˜¨ë„ë¥¼ ì…ë ¥í•˜ì„¸ìš”");
+//			String temperature = sc.nextLine();
+//			System.out.println("ë³´ê´€ ê¸°ê°„ì„ ìˆ«ìë¡œ ì…ë ¥í•˜ì„¸ìš”");
+//			int storage = sc.nextInt();
+			
+//			Vaccine vaccine = new Vaccine(vaccineName, targetAge, period, platform, temperature, storage);
+			Vaccine vaccine = new Vaccine("ì–€ì„¼",50,0,"ë°”ì´ëŸ¬ìŠ¤ ë²¡í„°","-25ë„ ~ 15ë„",8);
+			EndView.addVaccineView(VaccineDAO.addVaccine(vaccine));
+					
+		}
+
+		public static void findByVaccineName(String vaccinName) {
+			if(vaccinName != null && !vaccinName.equals("")) {
+				EndView.getVaccine(VaccineDAO.findByVaccineName(vaccinName));
+			}else {
+				EndView.errorMessage("ì•„ë¬´ê²ƒë„ ì…ë ¥í•˜ì§€ ì•Šì•˜ê±°ë‚˜ nullê°’ ì…ë‹ˆë‹¤.");
+			}
+		}
+
+		public static void findByVaccineTagetAge(int targetAge) {
+			if((Integer)targetAge !=null) {
+				try {
+					EndView.showVaccinList(VaccineDAO.findByVaccineTagetAge(targetAge));
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
+			}else {
+				EndView.errorMessage("ì•„ë¬´ê²ƒë„ ì…ë ¥í•˜ì§€ ì•Šì•˜ê±°ë‚˜ nullê°’ ì…ë‹ˆë‹¤.");
+			}
+			
+		}
+
+		public static void updateVaccine(String vaccineName) {
+			if(vaccineName != null && !vaccineName.equals("")) {
+				//ìˆ˜ì • ë°ì´í„°, ê°ì²´ ì…ë ¥ 
+				Vaccine updateVaccine = new Vaccine(vaccineName,30,0,"ë°”ì´ëŸ¬ìŠ¤ ë²¡í„°","-25ë„ ~ 15ë„",8);
+				VaccineDAO.updateVaccine(updateVaccine);
+			}else {
+				EndView.errorMessage("ì•„ë¬´ê²ƒë„ ì…ë ¥í•˜ì§€ ì•Šì•˜ê±°ë‚˜ nullê°’ ì…ë‹ˆë‹¤.");
+			}
+			
+		}
+		public static void updateVaccineAge(String vaccineName, int age) {
+			if(vaccineName != null && !vaccineName.equals("") && (Integer)age !=null) {
+				boolean result = VaccineDAO.updateVaccineAge(vaccineName, age);
+				
+				if(result == true) {
+					System.out.println("ë³€ê²½ ì„±ê³µ");
+				}else {
+					System.out.println("ë³€ê²½ ì‹¤íŒ¨");
+				}
+			}else {
+				EndView.errorMessage("ì•„ë¬´ê²ƒë„ ì…ë ¥í•˜ì§€ ì•Šì•˜ê±°ë‚˜ nullê°’ ì…ë‹ˆë‹¤.");
+			}
+			
+		}
+
+		public static void deleteVaccine(String vaccineName) {
+			if(vaccineName != null && !vaccineName.equals("")) {
+				VaccineDAO.deleteVaccine(vaccineName);
+			}else {
+				EndView.errorMessage("ì•„ë¬´ê²ƒë„ ì…ë ¥í•˜ì§€ ì•Šì•˜ê±°ë‚˜ nullê°’ ì…ë‹ˆë‹¤.");
+			}
+		}
 }

@@ -1,9 +1,16 @@
 package model.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +22,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NamedQuery(query="select v from Vaccine v where v.vaccineName=:name", name="Vaccine.findByVaccineName")
+@NamedQuery(query="select v from Vaccine v where v.targetAge<=:target_age", name="Vaccine.findByVaccineTargetAge")
 @Entity(name="Vaccine")
 public class Vaccine {
 	@Id
@@ -34,8 +42,8 @@ public class Vaccine {
 
 	@Override
 	public String toString() {
-		return "[¹é½Å = " + vaccineName + "], [Á¢Á¾ ¿¬·É = " + targetAge + "¼¼ ÀÌ»ó], [Á¢Á¾ °£°Ý = " + period + "ÀÏ], [ÇÃ·§Æû = "
-				+ platform + "], [º¸°ü ¿Âµµ = " + temperature + "], [º¸°ü ±â°£ = " + storage + "]";
+		return "[ë°±ì‹  = " + vaccineName + "], [ì ‘ì¢… ì—°ë ¹ = " + targetAge + "ì„¸ ì´ìƒ], [ì ‘ì¢… ê°„ê²© = " + period + "ì¼], [í”Œëž«í¼ = "
+				+ platform + "], [ë³´ê´€ ì˜¨ë„ = " + temperature + "], [ë³´ê´€ ê¸°ê°„ = " + storage + "ê°œì›”]";
 	}
 	
 }
