@@ -91,5 +91,9 @@ public class EndView {
 		}
 	}
 	
-	
+	//에러 메시지
+	public static void errorMessage(String message) {
+		System.out.println(message);
+	}
+
 }

@@ -94,7 +94,7 @@ public class HospitalDAO {
 	}
 	
 	//백신이 있는 병원 검색
-	public ArrayList<Hospital> getVaccine(String vaccineName) {
+	public ArrayList<Hospital> getHospitalVaccine(String vaccineName) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		ArrayList<Hospital> list = new ArrayList<>(); 
@@ -109,8 +109,6 @@ public class HospitalDAO {
 				all.stream().filter(v -> v.getModerna() > 0).forEach(v -> list.add(v));
 			}else if(vaccineName.equals("AZ") | vaccineName.equals("az")) {
 				all.stream().filter(v -> v.getAz() > 0).forEach(v -> list.add(v));
-			}else {
-				System.out.println("백신의 이름을 다시 한번 확인해 주세요");
 			}
 			
 			tx.commit();
@@ -179,7 +177,7 @@ public class HospitalDAO {
 	}
 	
 	//병원 이름으로 모든 백신 수량 수정
-	public boolean updateAllVaccine(String hospitalName, int pfizer, int moderna, int az) {
+	public boolean updateHospitalAllVaccine(String hospitalName, int pfizer, int moderna, int az) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		boolean result = false;
@@ -209,7 +207,7 @@ public class HospitalDAO {
 	}
 	
 	//병원 이름으로 백신 수량 수정
-	public boolean updateVaccine(String hospitalName, String vaccineName, int num) {
+	public boolean updateHospitalVaccine(String hospitalName, String vaccineName, int num) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		boolean result = false;
@@ -225,9 +223,8 @@ public class HospitalDAO {
 					hos.setModerna(num);
 				}else if(vaccineName.equals("AZ") | vaccineName.equals("az")) {
 					hos.setAz(num);
-				}else {
-					System.out.println("백신의 이름을 다시 한번 확인해 주세요");
 				}
+				
 				result = true;
 			}
 			
@@ -268,20 +265,5 @@ public class HospitalDAO {
 		}
 		
 		return result;
-	}
-	
-//	@Test
-	void ma() {
-//		Hospital hos = new Hospital("몰라병원", "아무곳", 2, 0, 0);
-//		boolean result = addHospital(hos);
-//		System.out.println(result);
-//		List<Hospital> hospitals = getAllHospital();
-//		hospitals.forEach(v -> System.out.println(v));
-//		ArrayList<Hospital> hos = getVaccine("az");
-//		hos.forEach(v -> System.out.println(v));
-		deleteHospital("몰라병원");
-		List<Hospital> hospitals = getAllHospital();
-		hospitals.forEach(v -> System.out.println(v));
-		
 	}
 }
