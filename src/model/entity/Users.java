@@ -31,7 +31,7 @@ public class Users {
 	private int age;
 	
 	@Column(name="address")
-	private String userAdd;
+	private String userAddress;
 	
 	private String date1;
 	
@@ -47,7 +47,7 @@ public class Users {
 
 	@Override
 	public String toString() {
-		return "[주민등록번호 = " + idNum + "], [이름 = " + userName + "], [나이 = " + age + "], [주소 = " + userAdd + "], [1차 접종날짜 = "
+		return "[주민등록번호 = " + idNum + "], [이름 = " + userName + "], [나이 = " + age + "], [주소 = " + userAddress + "], [1차 접종날짜 = "
 				+ date1 + "], [2차 접종날짜 = " + date2 + "], [접종 백신 = " + vaccine.getVaccineName() + "], [접종 병원 = " + hospital.getHospitalName() + "]";
 
 	}

@@ -18,6 +18,14 @@ import util.PublicCommon;
 
 public class UsersDAO {
 	
+	// 1차 접종일로 2차 접종일 계산해서 반환하는 메소드
+	public static String getNextVaccineDate(String date1, int period) {
+		LocalDate dateOne = LocalDate.parse(date1, DateTimeFormatter.BASIC_ISO_DATE);
+		LocalDate dateTwo = dateOne.plusDays(period);
+		
+		return dateTwo.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+	}
+	
 	/**
 	 * 영훈님 다음 접종일 가져오기
 	 */	
@@ -79,7 +87,8 @@ public class UsersDAO {
 	 * - getUser
 	 * - (private) getUserById
 	 * - deleteUser
-	 * - updateUser
+	 * - updateUserDate
+	 * - updateUserAdd
 	 */
 	public static Users getUser(String name, int idNum) {
 		EntityManager em = PublicCommon.getEntityManager();
@@ -107,9 +116,8 @@ public class UsersDAO {
 		
 		if(user != null) {
 			return user;
-		} else {
-			return null;
-		}
+		} 
+		return null;
 	}
 	
 	
@@ -167,42 +175,36 @@ public class UsersDAO {
 			Users user = (Users) em.createNamedQuery("Users.findByIdNum").setParameter("id", idNum).getSingleResult();
 			LocalDate todaysDate = LocalDate.now();
 			LocalDate newDate = LocalDate.parse(date, DateTimeFormatter.BASIC_ISO_DATE);
-
+			
 			if(user != null) {
+				LocalDate date1 = LocalDate.parse(user.getDate1(), DateTimeFormatter.BASIC_ISO_DATE);
+				LocalDate date2 = LocalDate.parse(user.getDate2(), DateTimeFormatter.BASIC_ISO_DATE);
 				
 				//1차 접종일 변경
 				if(dateNum == 1) {
-					LocalDate date1 = LocalDate.parse(user.getDate1(), DateTimeFormatter.BASIC_ISO_DATE);
-
-					if(date1.isAfter(todaysDate)) {
-						if(newDate.isAfter(todaysDate)) {
-							user.setDate1(newDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-							em.persist(user);
-							tx.commit();
-							return true;
-						}else {  // 새로운 날짜가 오늘보다 이전일 경우
-							return false;
-						}
-					}else {  // 1차 접종 날짜가 이미 지났을 경우
+					if(date1.isAfter(todaysDate) && newDate.isAfter(date1) && newDate.isAfter(todaysDate)) {
+						user.setDate1(newDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+						user.setDate2(getNextVaccineDate(user.getDate1(), user.getVaccine().getPeriod()));
+						
+						tx.commit();
+						return true;
+					}else {  // 1차 접종 날짜가 이미 지났거나, 새로운 날짜가 오늘보다 이전일 경우
 						return false;
 					}
 
-					//2차 접종일 변경
+				//2차 접종일 변경
 				}else if(dateNum == 2) {
-					LocalDate date2 = LocalDate.parse(user.getDate2(), DateTimeFormatter.BASIC_ISO_DATE);
-
-					if(date2.isAfter(todaysDate)) {
-						if(newDate.isAfter(todaysDate)) {
-							user.setDate2(newDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-							em.persist(user);
-							tx.commit();
-							return true;
-						}else {  // 새로운 날짜가 오늘보다 이전일 경우
-							return false;
-						}
-					}else {  // 2차 접종 날짜가 이미 지났을 경우
+					LocalDate maxDate = date1.plusMonths(3);
+					
+					if(date2.isAfter(todaysDate) && newDate.isAfter(date2) && newDate.isAfter(todaysDate) && newDate.isBefore(maxDate)) {
+						user.setDate2(newDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+						
+						tx.commit();
+						return true;
+					}else {  // 2차 접종 날짜가 이미 지났거나,  기존 예약일보다 전이거나, 새로운 날짜가 오늘보다 이전이거나, 1차 접종으로부터 3달 넘게 지난 날일 경우
 						return false;  
 					}
+					
 				}else {  // 날짜 선택 값을 잘 못 넣은 경우
 					return false;
 				}
@@ -212,6 +214,29 @@ public class UsersDAO {
 			}
 
 		}catch (Exception e) {
+			tx.rollback();
+			e.getStackTrace();
+		}finally {
+			em.close();
+			em = null;
+		}
+		return false;
+	}
+	
+	
+	public static boolean updateUserAddress(int idNum, String address) {
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+
+		tx.begin();
+
+		try {
+			Users user = (Users) em.createNamedQuery("Users.findByIdNum").setParameter("id", idNum).getSingleResult();
+			user.setUserAddress(address);
+
+			tx.commit();
+			return true;
+		}catch(Exception e) {
 			tx.rollback();
 			e.getStackTrace();
 		}finally {
