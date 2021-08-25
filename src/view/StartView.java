@@ -9,7 +9,7 @@ public class StartView {
 	
 	
 	public static void main(String[] args) {
-		Controller.vaccineStart();
+//		Controller.vaccineStart();
 		
 //		Controller con = Controller.getInstance();
 		
