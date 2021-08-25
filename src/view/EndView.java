@@ -50,20 +50,17 @@ public class EndView {
 	 */
 
 	public static void showVaccinList(List<Vaccine> allVaccine) {
-		if(allVaccine != null) {
-			int length = allVaccine.size();
-			
-			if( length != 0 ){
-				for(int index = 0; index < length; index++){			
-					System.out.println("검색정보 " + (index+1) + " - " + allVaccine.get(index));
-				}
-			}else {
-				System.out.println("요청하신 백신 정보는 존재하지 않습니다.");
+		int length = allVaccine.size();
+		
+		if( length != 0 ){
+			for(int index = 0; index < length; index++){			
+				System.out.println("검색정보 " + (index+1) + " - " + allVaccine.get(index));
 			}
 		}else {
 			System.out.println("요청하신 백신 정보는 존재하지 않습니다.");
 		}
 	}
+	
 
 	public static void addVaccineView(Vaccine vaccine) {
 		if(vaccine == null) {
@@ -95,7 +92,17 @@ public class EndView {
 	
 	//모든 정보 출력
 	public static void hospitalAllView(List<Hospital> hospital) {
+<<<<<<< HEAD
+			int length = hospital.size(); // 저장된 데이터 개수 반환
+
+			if (length != 0) {
+				hospital.forEach(v -> System.out.println(v));
+			} else {
+				System.out.println("요청하신 정보는 없습니다");
+			} 
+=======
 		hospital.forEach(v -> System.out.println(v));
+>>>>>>> a0f0992274b3c7cc81a24559489eec5b77f1b68e
 	}
 
 	//특정 병원 출력
