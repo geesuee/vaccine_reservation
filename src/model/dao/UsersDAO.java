@@ -4,13 +4,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.NoResultException;
 
 import model.entity.Users;
 import util.PublicCommon;
@@ -22,10 +22,11 @@ public class UsersDAO {
 	 * - getNextVaccineDate
 	 * - getUserNextVaccineDate
 	 * - (private) nextVaccineDate
+	 * - **nextVaccineDate2
 	 * - getAllUsers
 	 * - getAllUsersByHospital
 	 * - getUser
-	 * - (private) getUserById
+	 * - **getUserById
 	 * - addUser
 	 * - updateUserDate
 	 * - updateUserAddress
@@ -119,17 +120,11 @@ public class UsersDAO {
 	
 	public static List<Users> getAllUsers() {
 		EntityManager em = PublicCommon.getEntityManager();
-		EntityTransaction tx = em.getTransaction();
-		List<Users> userList = null;
-		
-		tx.begin();
+		List<Users> userList = new ArrayList<>();
 		
 		try {
 			userList = em.createQuery("select u from Users u").getResultList();
-			
-			tx.commit();
 		}catch(Exception e) {
-			tx.rollback();
 			e.printStackTrace();
 		}finally {
 			em.close();
@@ -142,17 +137,11 @@ public class UsersDAO {
 	
 	public static List<Users> getAllUsersByHospital(String hospitalName) {
 		EntityManager em = PublicCommon.getEntityManager();
-		EntityTransaction tx = em.getTransaction();
-		List<Users> userList = null;
-		
-		tx.begin();
+		List<Users> userList = new ArrayList<>();
 		
 		try {
 			userList = em.createQuery("select u from Users u where hospital_name = :hospital").setParameter("hospital", hospitalName).getResultList();
-			
-			tx.commit();
 		}catch(Exception e) {
-			tx.rollback();
 			e.printStackTrace();
 		}finally {
 			em.close();
@@ -165,9 +154,10 @@ public class UsersDAO {
 	
 	public static Users getUser(String name, int idNum) {
 		EntityManager em = PublicCommon.getEntityManager();
+		List<Users> userList = new ArrayList<>();
 		
 		try {
-			List<Users> userList = em.createNamedQuery("Users.findByUserName").setParameter("name", name).getResultList();
+			userList = em.createNamedQuery("Users.findByUserName").setParameter("name", name).getResultList();
 			
 			if(userList.size() == 1) {
 				return userList.get(0);
@@ -180,6 +170,7 @@ public class UsersDAO {
 			em.close();
 			em = null;
 		}
+		
 		return null;
 	}
 
@@ -189,23 +180,18 @@ public class UsersDAO {
 		Users user = null;
 		
 		try {
-			try {
-				user = (Users) em.createNamedQuery("Users.findByIdNum").setParameter("id", idNum).getSingleResult();
-			}catch(NoResultException n) {
-				
-			}
+			user = (Users) em.createNamedQuery("Users.findByIdNum").setParameter("id", idNum).getSingleResult();
 
 			if(user != null) {
 				return user;
-			} else {
-				return null;
-			}
+			} 
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
 			em.close();
 			em = null;
 		}
+		
 		return null;
 	}
 
@@ -224,7 +210,7 @@ public class UsersDAO {
 			result = true;
 		}catch(Exception e) {
 			tx.rollback();
-			e.getStackTrace();
+			e.printStackTrace();
 		}finally {
 			em.close();
 			em = null;
@@ -260,9 +246,6 @@ public class UsersDAO {
 						tx.commit();
 						result = true;
 					}
-//					else {  // 1차 접종 날짜가 이미 지났거나, 새로운 날짜가 오늘보다 이전일 경우
-//						return false;
-//					}
 
 				//2차 접종일 변경
 				}else if(dateNum == 2) {
@@ -274,16 +257,6 @@ public class UsersDAO {
 						tx.commit();
 						result = true;
 					}
-//					else {  // 2차 접종 날짜가 이미 지났거나,  기존 예약일보다 전이거나, 새로운 날짜가 오늘보다 이전이거나, 1차 접종으로부터 3달 넘게 지난 날일 경우
-//						return false;  
-//					}
-//
-//				}else {  // 날짜 선택 값을 잘 못 넣은 경우
-//					return false;
-//				}
-//
-//			}else {  // idNum으로 찾은 user가 null일 경우
-//				return false;
 				}
 			}
 
@@ -294,6 +267,7 @@ public class UsersDAO {
 			em.close();
 			em = null;
 		}
+		
 		return result;
 	}
 

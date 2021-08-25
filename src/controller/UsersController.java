@@ -19,10 +19,13 @@ public class UsersController {
 	
 	/**
 	 * Users Controller
-	 * - nextVaccineDate
+	 * - **getVaccineDate
+	 * - **nextVaccineDate
 	 * - getAllUsers
 	 * - getAllUsersByHospital
+	 * - **getAllUsersByHospitalBoolean
 	 * - getUser
+	 * - **getUser2
 	 * - addUser
 	 * - updateUserDate
 	 * - updateUserAddress
@@ -30,18 +33,18 @@ public class UsersController {
 	 */
 	
 	//보류
-	public void getVaccineDate(int idNum) {
-		if((Integer)idNum != null) {
-			Users user = UsersDAO.getUserNextVaccineDate(idNum);
-			if(user != null) {
-				EndView.showNextVaccineDate(user);
-			}else {
-				EndView.errorMessage("해당 주민등록번호와 일치하는 접종 예약자 정보가 없습니다.");
-			}
-		}else {
-			EndView.nullMessage();
-		}
-	}
+//	public void getVaccineDate(int idNum) {
+//		if((Integer)idNum != null) {
+//			Users user = UsersDAO.getUserNextVaccineDate(idNum);
+//			if(user != null) {
+//				EndView.showNextVaccineDate(user);
+//			}else {
+//				EndView.errorMessage("해당 주민등록번호와 일치하는 접종 예약자 정보가 존재하지 않습니다.");
+//			}
+//		}else {
+//			EndView.nullMessage();
+//		}
+//	}
 	
 	//1차접종날짜 받아서 2차 접종날짜 할당
 	public String nextVaccineDate(String date, String vaccineName) {
@@ -62,9 +65,10 @@ public class UsersController {
 		if(userList.size() > 0) {
 			EndView.showAll(userList);
 		}else {
-			EndView.errorMessage("접종 예약자 정보가 없습니다.");
+			EndView.errorMessage("접종 예약자 정보가 존재하지 않습니다.");
 		}
 	}
+	
 	
 	public void getAllUsersByHospital(String hospitalName) {
 		if(hospitalName != null && !hospitalName.equals("")) {
@@ -73,22 +77,23 @@ public class UsersController {
 			if(userList.size() > 0) {
 				EndView.showAll(userList);
 			}else {
-				EndView.errorMessage(hospitalName + "의 접종 예약자 정보가 없습니다.");
+				EndView.errorMessage(hospitalName + "의 접종 예약자 정보가 존재하지 않습니다.");
 			}
 		}else {
 			EndView.nullMessage();
 		}
 	}
 	
-	public boolean getAllUsersByHospitalBoolean(String hospitalName) {
-		List<Users> userList = UsersDAO.getAllUsersByHospital(hospitalName);
-		
-		if(userList.size() > 0) {
-			return true;
-		}
-		
-		return false;
-	}
+//	//?위랑 같은 메소드인데 불리언 반환임
+//	public boolean getAllUsersByHospitalBoolean(String hospitalName) {
+//		List<Users> userList = UsersDAO.getAllUsersByHospital(hospitalName);
+//		
+//		if(userList.size() > 0) {
+//			return true;
+//		}
+//		
+//		return false;
+//	}
 	
 	
 	public void getUser(String name, int idNum) {
@@ -97,27 +102,29 @@ public class UsersController {
 			if(user != null) {
 				EndView.showOne(user);
 			}else {
-				EndView.errorMessage("해당 정보와 일치하는 접종 예약자 정보가 없습니다.");
+				EndView.errorMessage("해당 정보와 일치하는 접종 예약자 정보가 존재하지 않습니다.");
 			}
 		}else {
 			EndView.nullMessage();
 		}
 	}
 	
-	public Users getUser2(int idNum) {
-		return UsersDAO.getUserById(idNum);
-	}
-
-	public boolean getUserBoolean(int idNum) {
-		boolean result = false;
-		Users user = UsersDAO.getUserById(idNum);
-		
-		if(user != null) {
-			result = true;
-		}
-		
-		return result;
-	}
+//	// 아니 2만 붙이면 어쩌라는거임
+//	public Users getUser2(int idNum) {
+//		return UsersDAO.getUserById(idNum);
+//	}
+//
+//	public boolean getUserBoolean(int idNum) {
+//		boolean result = false;
+//		Users user = UsersDAO.getUserById(idNum);
+//		
+//		if(user != null) {
+//			result = true;
+//		}
+//		
+//		return result;
+//	}
+//	
 	
 	public void addUser(Users user) {
 		if(user != null) {
@@ -127,7 +134,7 @@ public class UsersController {
 				EndView.failMessage("예약자 : " + user.getUserName() + "] 접종 예약");
 			}
 		}else {
-			EndView.errorMessage("유효하지 않은 접종 예약자 정보입니다."); // 보류
+			EndView.nullMessage();
 		}
 	}
 
