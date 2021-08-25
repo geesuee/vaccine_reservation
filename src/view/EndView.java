@@ -17,6 +17,7 @@ public class EndView {
 	 * - showUser
 	 * - errorMessage (공통)
 	 * - showResult (공통 - 아직 통합 전)
+	 * - showUsersList
 	 */
 	
 	public static void showNextVaccineDate(Users user) {
@@ -34,6 +35,10 @@ public class EndView {
 
 	public static void showUser(Users user) {
 		System.out.println(user);
+	}
+	
+	public static void showUsersList(List<Users> userList) {
+		userList.forEach(v -> System.out.println(v));
 	}
 
 
