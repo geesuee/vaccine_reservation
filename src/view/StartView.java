@@ -1,24 +1,28 @@
 package view;
 
+import java.io.IOException;
+
+import controller.Controller;
 import controller.HospitalController;
 import controller.UsersController;
 import controller.VaccineController;
-import model.entity.Hospital;
 
 public class StartView {
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
+		Controller.vaccineStart();
+		
 //		Controller con = Controller.getInstance();
 		
 //		HospitalController.getAllHospital();
 //		UsersController.getAllUsers();
 //		VaccineController.getAllVaccine();
-		
-		HospitalController.getHospitalLocation("송파구");
-		UsersController.getUser("배지수", 971202);
-		VaccineController.getVaccineByName("화이자");
-		
+//		
+//		HospitalController.getHospitalLocation("송파구");
+//		UsersController.getUser("배지수", 971202);
+//		VaccineController.getVaccineByName("화이자");
+//		
 		
 		/**
 		 * 여기도 나중에 다 같이 고쳐요!

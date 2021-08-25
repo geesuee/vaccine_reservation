@@ -2,9 +2,7 @@ package view;
 
 import java.util.List;
 
-import model.entity.Hospital;
 import model.entity.Users;
-import model.entity.Vaccine;
 
 public class EndView {
 
