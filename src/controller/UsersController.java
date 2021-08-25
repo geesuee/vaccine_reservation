@@ -19,19 +19,16 @@ public class UsersController {
 	/**
 	 * Users Controller
 	 * - nextVaccineDate
-	 * 
 	 * - getAllUsers
 	 * - getAllUsersByHospital
 	 * - getUser
-	 * 
-	 * - createUser -> addUser
-	 * 
+	 * - addUser
 	 * - updateUserDate
 	 * - updateUserAddress
-	 * 
 	 * - deleteUser
 	 */
 	
+	//보류
 	public static void nextVaccineDate(int idNum) {
 		if((Integer)idNum != null) {
 			Users user = UsersDAO.getUserNextVaccineDate(idNum);
@@ -41,7 +38,7 @@ public class UsersController {
 				EndView.errorMessage("해당 주민등록번호와 일치하는 접종 예약자 정보가 없습니다.");
 			}
 		}else {
-			EndView.errorMessage("주민등록번호 앞자리는 null일 수 없습니다.");
+			EndView.nullMessage();
 		}
 	}
 	
@@ -50,7 +47,7 @@ public class UsersController {
 		List<Users> userList = UsersDAO.getAllUsers();
 		
 		if(userList.size() > 0) {
-			EndView.allView(userList);
+			EndView.showAll(userList);
 		}else {
 			EndView.errorMessage("접종 예약자 정보가 없습니다.");
 		}
@@ -61,10 +58,12 @@ public class UsersController {
 			List<Users> userList = UsersDAO.getAllUsersByHospital(hospitalName);
 			
 			if(userList.size() > 0) {
-				EndView.showUsersList(userList);
+				EndView.showAll(userList);
 			}else {
 				EndView.errorMessage(hospitalName + "의 접종 예약자 정보가 없습니다.");
 			}
+		}else {
+			EndView.nullMessage();
 		}
 	}
 	
@@ -73,12 +72,12 @@ public class UsersController {
 		if(name != null && !name.equals("") && (Integer)idNum != null) {
 			Users user = UsersDAO.getUser(name, idNum);
 			if(user != null) {
-				EndView.showUser(user);
+				EndView.showOne(user);
 			}else {
 				EndView.errorMessage("해당 정보와 일치하는 접종 예약자 정보가 없습니다.");
 			}
 		}else {
-			EndView.errorMessage("이름과 주민등록번호 앞자리는 null일 수 없습니다.");
+			EndView.nullMessage();
 		}
 	}
 
@@ -86,12 +85,12 @@ public class UsersController {
 	public static void addUser(Users user) {
 		if(user != null) {
 			if(UsersDAO.addUser(user)) {
-				EndView.showResult(user.getUserName() + " 님의 백신 접종 예약이 완료되었습니다.");
+				EndView.successMessage("예약자 : " + user.getUserName() + "] 접종 예약");
 			}else {
-				EndView.errorMessage("접종 예약을 실패하였습니다.");
+				EndView.failMessage("예약자 : " + user.getUserName() + "] 접종 예약");
 			}
 		}else {
-			EndView.errorMessage("유효하지 않은 접종 예약자 정보입니다.");
+			EndView.errorMessage("유효하지 않은 접종 예약자 정보입니다."); // 보류
 		}
 	}
 
@@ -99,12 +98,12 @@ public class UsersController {
 	public static void updateUserDate(int idNum, int dateNum, String date) {
 		if((Integer)idNum != null && (Integer)dateNum != null && date != null && !date.equals("")) {
 			if(UsersDAO.updateUserDate(idNum, dateNum, date)) {
-				EndView.showResult(dateNum + "차 백신 접종 일자가 " + date + "로 수정되었습니다.");
+				EndView.successMessage("예약자 주민등록 번호 : " + idNum + "] 접종일 수정");
 			}else {
-				EndView.errorMessage("접종 예약 수정을 실패하였습니다.");
+				EndView.failMessage("예약자 주민등록 번호 : " + idNum + "] 접종일 수정");
 			}
 		}else {
-			EndView.errorMessage("주민등록번호 앞자리, 수정할 접종 예약 차시, 수정할 접종 일자는 null일 수 없습니다.");
+			EndView.nullMessage();
 		}
 	}
 
@@ -112,12 +111,12 @@ public class UsersController {
 	public static void updateUserAddress(int idNum, String address) {
 		if((Integer)idNum != null && address != null && !address.equals("")) {
 			if(UsersDAO.updateUserAddress(idNum, address)) {
-				EndView.showResult("주소 수정이 완료되었습니다.");
+				EndView.successMessage("예약자 주민등록 번호 : " + idNum + "] 주소 수정");
 			}else {
-				EndView.errorMessage("주소 수정을 실패하였습니다.");
+				EndView.failMessage("예약자 주민등록 번호 : " + idNum + "] 주소 수정");
 			}
 		}else {
-			EndView.errorMessage("주민등록번호 앞자리, 수정할 주소 정보는 null일 수 없습니다.");
+			EndView.nullMessage();
 		}
 	}
 
@@ -125,12 +124,12 @@ public class UsersController {
 	public static void deleteUser(int idNum) {
 		if((Integer)idNum != null) {
 			if(UsersDAO.deleteUser(idNum)) {
-				EndView.showResult("백신 접종 예약 취소가 완료되었습니다.");
+				EndView.successMessage("예약자 주민등록 번호 : " + idNum + "] 접종 예약 취소");
 			}else {
-				EndView.errorMessage("접종 예약 취소를 실패하였습니다.");
+				EndView.failMessage("예약자 주민등록 번호 : " + idNum + "] 접종 예약 취소");
 			}
 		}else {
-			EndView.errorMessage("주민등록번호 앞자리는 null일 수 없습니다.");
+			EndView.nullMessage();
 		}
 	}
 }

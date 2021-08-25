@@ -36,7 +36,7 @@ public class HospitalController {
 		List<Hospital> hos = HospitalDAO.getAllHospital();
 		
 		if(hos.size() > 0) {
-			EndView.allView(hos);
+			EndView.showAll(hos);
 		}else {
 			EndView.errorMessage("병원이 하나도 없습니다");
 		}
@@ -48,13 +48,12 @@ public class HospitalController {
 			Hospital hos = HospitalDAO.getHospitalByName(hospitalName);
 			
 			if(hos != null) {
-				EndView.hospitalView(hos);
+				EndView.showOne(hos);
 			}else {
 				EndView.errorMessage("검색한 이름의 병원은 존재하지 않습니다");
 			}
 		}else {
-			EndView.errorMessage("null값이거나 아무것도 입력하지 않았습니다");	
-			
+			EndView.nullMessage();	
 		}
 	}
 	
@@ -64,12 +63,12 @@ public class HospitalController {
 			Hospital hos = HospitalDAO.getHospitalByLocation(location);
 			
 			if(hos != null) {
-				EndView.hospitalView(hos);
+				EndView.showOne(hos);
 			}else {
 				EndView.errorMessage("검색한 지역에 있는 병원이 없습니다");
 			}
 		}else {
-			EndView.errorMessage("null값이거나 아무것도 입력하지 않았습니다");
+			EndView.nullMessage();
 		}
 	}
 	
@@ -79,12 +78,12 @@ public class HospitalController {
 			ArrayList<Hospital> hos = HospitalDAO.getHospitalByVaccine(vaccineName);
 			
 			if(hos.size() > 0) {
-				EndView.hospitalAllView(hos);
+				EndView.showAll(hos);
 			}else {
 				EndView.errorMessage("해당하는 백신이 있는 병원이 하나도 없습니다");
 			}
 		}else {
-			EndView.errorMessage("null값이거나 아무것도 입력하지 않았습니다");
+			EndView.nullMessage();
 		}
 	}
 	
@@ -94,12 +93,12 @@ public class HospitalController {
 			boolean result = HospitalDAO.addHospital(hospital);
 			
 			if(result == true) {
-				EndView.hospitalImpormationView(hospital.getHospitalName() + "] insert");
+				EndView.successMessage("병원 : " + hospital.getHospitalName() + "] 저장");
 			}else {
-				EndView.errorMessage("\n요청하신 [병원 : " + hospital.getHospitalName() + "] insert 실패, 병원을 재확인 하세요");
+				EndView.failMessage("병원 : " + hospital.getHospitalName() + "] 저장");
 			}
 		}else {
-			EndView.errorMessage("해당 병원은 존재하지 않습니다");
+			EndView.errorMessage("해당 병원은 존재하지 않습니다");  // 보류
 		}
 	}
 	
@@ -110,12 +109,12 @@ public class HospitalController {
 			boolean result2 = HospitalDAO.updateHospitalAllVaccine(hospitalName, pfizer, moderna, az);
 			
 			if(result1 == true && result2 == true) {
-				EndView.hospitalImpormationView(hospitalName + "] 정보 수정");
+				EndView.successMessage("병원 : " + hospitalName + "] 정보 수정");
 			}else {
-				EndView.errorMessage("수정할 병원과 정보를 다시 한번 확인해 주세요");
+				EndView.failMessage("병원 : " + hospitalName + "] 정보 수정");
 			}
 		}else {
-			EndView.errorMessage("null값이거나 아무것도 입력하지 않았습니다");
+			EndView.nullMessage();
 		}
 	}
 	
@@ -125,12 +124,12 @@ public class HospitalController {
 			boolean result = HospitalDAO.updateHospitalLocation(hospitalName, location);
 			
 			if(result == true) {
-				EndView.hospitalImpormationView(hospitalName + "] 지역 정보 수정");
+				EndView.successMessage("병원 : " + hospitalName + "] 지역 정보 수정");
 			}else {
-				EndView.errorMessage("\n요청하신 [병원 : " + hospitalName + "] 수정 실패, 병원을 재확인 하세요");
+				EndView.failMessage("병원 : " + hospitalName + "] 지역 정보 수정");
 			}
 		}else {
-			EndView.errorMessage("null값이거나 아무것도 입력하지 않았습니다");
+			EndView.nullMessage();
 		}
 	}
 	
@@ -140,12 +139,12 @@ public class HospitalController {
 			boolean result = HospitalDAO.updateHospitalAllVaccine(hospitalName, pfizer, moderna, az);
 			
 			if(result == true) {
-				EndView.hospitalImpormationView(hospitalName + "] 백신 정보 수정");
+				EndView.successMessage("병원 : " + hospitalName + "] 백신 정보 수정");
 			}else {
-				EndView.errorMessage("\n요청하신 [병원 : " + hospitalName + "] 수정 실패, 병원을 재확인 하세요");
+				EndView.failMessage("병원 : " + hospitalName + "] 백신 정보 수정");
 			}
 		}else {
-			EndView.errorMessage("null값이거나 아무것도 입력하지 않았습니다");
+			EndView.nullMessage();
 		}
 	}
 	
@@ -155,12 +154,12 @@ public class HospitalController {
 			boolean result = HospitalDAO.updateHospitalVaccine(hospitalName, vaccineName, num);
 			
 			if(result == true) {
-				EndView.hospitalImpormationView(hospitalName + "] 백신 [" + vaccineName +"] 정보 수정");
+				EndView.successMessage("병원 : " + hospitalName + "] 백신 [" + vaccineName +"] 정보 수정");
 			}else {
-				EndView.errorMessage("\n요청하신 [병원 : " + hospitalName + "] 수정 실패, 병원을 재확인 하세요");
+				EndView.failMessage("병원 : " + hospitalName + "] 백신 [" + vaccineName +"] 정보 수정");
 			}
 		}else {
-			EndView.errorMessage("null값이거나 아무것도 입력하지 않았습니다");
+			EndView.nullMessage();
 		}
 	}
 	
@@ -170,13 +169,12 @@ public class HospitalController {
 			boolean result = HospitalDAO.deleteHospital(hospitalName);
 			
 			if(result == true) {
-				EndView.hospitalImpormationView(hospitalName + "] delete");
+				EndView.successMessage("병원 : " + hospitalName + "] 삭제");
 			}else {
-				EndView.errorMessage("\n요청하신 [병원 : " + hospitalName + "] delete 실패, 병원을 재확인 하세요");
+				EndView.failMessage("병원 : " + hospitalName + "] 삭제");
 			}
 		}else {
-			EndView.errorMessage("null값이거나 아무것도 입력하지 않았습니다");
+			EndView.nullMessage();
 		}
 	}
-
 }

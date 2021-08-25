@@ -19,14 +19,11 @@ public class VaccineController {
 	/** 
 	 * Vaccine Controller
 	 * - getAllVaccine
-	 * - findByVaccineName -> getVaccineByName
-	 * - findByVaccineTagetAge -> getVaccineByTargetAge
-	 * 
+	 * - getVaccineByName
+	 * - getVaccineByTargetAge
 	 * - addVaccine
-	 * 
 	 * - updateVaccine
-	 * - updateVaccineAge -> updateVaccineTargetAge
-	 * 
+	 * - updateVaccineTargetAge
 	 * - deleteVaccine
 	 */
 	
@@ -34,7 +31,7 @@ public class VaccineController {
 		List<Vaccine> vaccineList = VaccineDAO.getAllVaccine();
 		
 		if(vaccineList.size() > 0) {
-			EndView.allView(vaccineList);
+			EndView.showAll(vaccineList);
 		}else {
 			EndView.errorMessage("백신 정보가 없습니다.");
 		}
@@ -45,12 +42,12 @@ public class VaccineController {
 		if(vaccinName != null && !vaccinName.equals("")) {
 			Vaccine vaccine = VaccineDAO.getVaccineByName(vaccinName);
 			if(vaccine != null) {
-				EndView.getVaccine(vaccine);
+				EndView.showOne(vaccine);
 			}else {
 				EndView.errorMessage("해당 이름의 백신 정보가 없습니다.");
 			}
 		}else {
-			EndView.errorMessage("아무것도 입력하지 않았거나 null값 입니다.");
+			EndView.nullMessage();
 		}
 	}
 
@@ -60,12 +57,12 @@ public class VaccineController {
 			List<Vaccine> vaccineList = VaccineDAO.getVaccineByTargetAge(targetAge);
 			
 			if(vaccineList.size() > 0) {
-				EndView.showVaccinList(vaccineList);
+				EndView.showAll(vaccineList);
 			}else {
 				EndView.errorMessage("해당 연령 대상 백신 정보가 없습니다.");
 			}
 		}else {
-			EndView.errorMessage("아무것도 입력하지 않았거나 null값 입니다.");
+			EndView.nullMessage();
 		}
 	}
 
@@ -92,15 +89,17 @@ public class VaccineController {
 		if(vaccine != null) {
 			try {
 				if(VaccineDAO.addVaccine(vaccine)) {
-					EndView.showResult("백신 등록 성공");
+					EndView.successMessage("백신 : " + vaccine.getVaccineName() + "] 저장");
 				}else {
-					EndView.errorMessage("백신 등록 실패");
+					EndView.failMessage("백신 : " + vaccine.getVaccineName() + "] 저장");
 				}
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
+		}else {
+			// 보류
 		}
-	}
+	} 
 	
 // -------------------------------------------------------------------------------
 	
@@ -110,12 +109,12 @@ public class VaccineController {
 			//수정 데이터, 객체 입력 
 //			Vaccine updateVaccine = new Vaccine(vaccineName,30,0,"바이러스 벡터","-25도 ~ 15도",8);
 			if(VaccineDAO.updateVaccine(vaccineName,platform,temper)) {
-				EndView.showResult(vaccineName +"수정이 성공했습니다.");
+				EndView.successMessage("백신 : " + vaccineName + "] 정보 수정");
 			}else {
-				EndView.errorMessage("접종 연령 수정을 실패했습니다.");
+				EndView.failMessage("백신 : " + vaccineName + "] 정보 수정");
 			}
 		}else {
-			EndView.errorMessage("아무것도 입력하지 않았거나 null값 입니다.");
+			EndView.nullMessage();
 		}
 		
 	}
@@ -127,12 +126,12 @@ public class VaccineController {
 		if(vaccineName != null && !vaccineName.equals("") && (Integer)age !=null) {
 			
 			if(VaccineDAO.updateVaccineTargetAge(vaccineName, age)) {
-				EndView.showResult(vaccineName + "의 접종 연령을 " + age + "새로 수정 완료하였습니다.");
+				EndView.successMessage("백신 : " + vaccineName + "] 접종 연령 수정");
 			}else {
-				EndView.errorMessage("접종 연령 수정을 실패했습니다.");
+				EndView.failMessage("백신 : " + vaccineName + "] 접종 연령 수정");
 			}
 		}else {
-			EndView.errorMessage("아무것도 입력하지 않았거나 null값 입니다.");
+			EndView.nullMessage();
 		}
 	}
 
@@ -144,12 +143,12 @@ public class VaccineController {
 		if(vaccineName != null && !vaccineName.equals("")) {
 			
 			if(VaccineDAO.deleteVaccine(vaccineName)) {
-				EndView.showResult("백신 삭제가 완료되었습니다.");
+				EndView.successMessage("백신 : " + vaccineName + "] 삭제");
 			}else {
-				EndView.errorMessage("백신 삭제가 실패되었습니다.");
+				EndView.failMessage("백신 : " + vaccineName + "] 삭제");
 			}
 		}else {
-			EndView.errorMessage("아무것도 입력하지 않았거나 null값 입니다.");
+			EndView.nullMessage();
 		}
 	}
 	

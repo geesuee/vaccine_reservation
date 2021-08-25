@@ -9,6 +9,7 @@ public class StartView {
 	
 	
 	public static void main(String[] args) {
+
 		Controller con = Controller.getInstance();
 		UsersController user = UsersController.getInstance();
 		HospitalController hospital = HospitalController.getInstance();
@@ -17,6 +18,17 @@ public class StartView {
 		user.getAllUsers();
 		hospital.getAllHospital();
 		vaccine.getAllVaccine();
+
+//		Controller con = Controller.getInstance();
+		
+//		HospitalController.getAllHospital();
+//		UsersController.getAllUsers();
+//		VaccineController.getAllVaccine();
+		
+//		HospitalController.getHospitalLocation("송파구");
+//		UsersController.getUser("배지수", 971202);
+//		VaccineController.getVaccineByName("화이자");
+		
 		/**
 		 * 여기도 나중에 다 같이 고쳐요!
 		 */
@@ -24,7 +36,7 @@ public class StartView {
 		
 //		System.out.println("=== user 검색 ===");
 //		Controller.getUser("배지수", 971202);
-//		
+		
 //		System.out.println("\n=== 새로운 user insert ===");
 //		Vaccine vaccine = new Vaccine("화이자", 12, 21, "mRNA", "-90도 ~ -60도", 6);
 //		Hospital hospital = new Hospital("아산병원", "송파구", 0, 4, 5);
@@ -80,7 +92,7 @@ public class StartView {
 //		
 //		System.out.println("\n=== 사용자 주소 수정 update ===");
 //		Controller.updateUserAddress(971202, "마포구");
-//		
+
 //		System.out.println("--- 모든 병원 검색 ---");
 //		con.getAllHospital();
 //		
