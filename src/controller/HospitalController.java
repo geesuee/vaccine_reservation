@@ -1,10 +1,12 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import model.dao.HospitalDAO;
 import model.entity.Hospital;
+import model.entity.Vaccine;
 import view.EndView;
 
 public class HospitalController {
@@ -32,7 +34,7 @@ public class HospitalController {
 	 */
 	
 	//모든 병원 검색
-	public static void getAllHospital(){
+	public void getAllHospital(){
 		List<Hospital> hos = HospitalDAO.getAllHospital();
 		
 		if(hos.size() > 0) {
@@ -54,17 +56,21 @@ public class HospitalController {
 			}
 		}else {
 			EndView.nullMessage();	
-			
 		}
 	}
 	
+	//병원 이름으로 병원 반환
+	public Hospital getHospitalName(String hospitalName) {
+		return HospitalDAO.getHospitalByName(hospitalName);
+	}
+	
 	//지역으로 병원 검색
-	public static void getHospitalLocation(String location) {
+	public void getHospitalLocation(String location) {
 		if(location != null && !location.equals("")) {
-			Hospital hos = HospitalDAO.getHospitalByLocation(location);
+			List<Hospital> hos = HospitalDAO.getHospitalByLocation(location);
 			
 			if(hos != null) {
-				EndView.showOne(hos);
+				EndView.showAll(hos);
 			}else {
 				EndView.errorMessage("검색한 지역에 있는 병원이 없습니다");
 			}
@@ -86,6 +92,28 @@ public class HospitalController {
 		}else {
 			EndView.nullMessage();
 		}
+	}
+	
+	//해당하는 백신이 있고 주소가 같은 병원 반환
+	public HashSet<Hospital> getReservationHospital(List<Vaccine> vaccine, String location){
+		List<Hospital> hospital = HospitalDAO.getHospitalByLocation(location);
+		ArrayList<Hospital> hos = HospitalDAO.getHospitalByVaccine(vaccine);
+		HashSet<Hospital> result = new HashSet<>();
+		
+		for(Hospital h : hospital) {
+			for(int i=0; i<hos.size(); i++) {
+				if(h.getHospitalName().equals(hos.get(i).getHospitalName())) {
+					result.add(h);
+				}
+			}
+		}
+		
+		return result;
+	}
+	
+	//해당 백신 수량 반환
+	public int getHospitalVaccineTotal(String hospitalName, String vaccineName) {
+		return HospitalDAO.getHospitalVaccineTotal(hospitalName, vaccineName);
 	}
 	
 	//새로운 병원 저장
