@@ -15,6 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NamedQuery(query="select h from Hospital h where h.hospitalName=:name", name="Hospital.findByHospitalName")
+@NamedQuery(query="select h from Hospital h where h.location=:location", name="Hospital.findByLocation")
 @Entity(name="Hospital")
 public class Hospital {
 	@Id
@@ -31,8 +32,8 @@ public class Hospital {
 
 	@Override
 	public String toString() {
-		return "[º´¿ø = " + hospitalName + "], [Áö¿ª = " + location + "], [È­ÀÌÀÚ = " + pfizer + "°³], [¸ğ´õ³ª = "
-				+ moderna + "°³], [AZ = " + az + "°³]";
+		return "[ë³‘ì› = " + hospitalName + "], [ì§€ì—­ = " + location + "], [í™”ì´ì = " + pfizer + "ê°œ], [ëª¨ë”ë‚˜ = "
+				+ moderna + "ê°œ], [AZ = " + az + "ê°œ]";
 	}
 
 	

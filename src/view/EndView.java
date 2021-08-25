@@ -1,153 +1,45 @@
 package view;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import model.entity.Hospital;
 import model.entity.Users;
-import model.entity.Vaccine;
 
 public class EndView {
-	public static void showNextVaccineDate(Users user) {
 
-		System.out.println(user.getUserName()+"님 1차 백신 날짜 :"+user.getDate1() +"2차 백신 예정일은 :" +user.getDate2()+" 입니다.");
+	
+	//다중 정보 출력
+	public static void showAll(List object) {
+		object.forEach(v -> System.out.println(v));
 	}
-
+	
+	//단일 정보출력
+	public static void showOne(Object object) {
+		System.out.println(object);
+	}
+	
+	//성공 메세지 출력
+	public static void successMessage(String function) {
+		System.out.println("요청하신 [" + function + " 완료");
+	}
+	
+	//실패 메세지 출력
+	public static void failMessage(String function) {
+		System.out.println("요청하신 [" + function + " 실패");
+	}
+	
+	//에러 메세지 출력
 	public static void errorMessage(String string) {
 		System.out.println(string);
 	}
 	
-	public static void showResult(String string) {
-		System.out.println(string);
-	}
-
-	public static void showUser(Users user) {
-		System.out.println(user);
-	}
-
-
-	/*EndView +VaccineDAO
-	 * -showNextVaccineDate
-	 * -showVaccinList
-	 * -addVaccineView
-	 * -getVaccine
-	 */
-
-
-	public static void showVaccinList(List<Vaccine> allVaccine) {
-		if(allVaccine != null) {
-			int length = allVaccine.size();
-			
-			if( length != 0 ){
-				for(int index = 0; index < length; index++){			
-					System.out.println("검색정보 " + (index+1) + " - " + allVaccine.get(index));
-				}
-			}else {
-				System.out.println("요청하신 백신 정보는 존재하지 않습니다.");
-			}
-		}else {
-			System.out.println("요청하신 백신 정보는 존재하지 않습니다.");
-		}
-	}
-
-	public static void addVaccineView(Vaccine vaccine) {
-		if(vaccine == null) {
-			System.out.println("백신 등록 실패하였습니다.");
-		}else {
-			System.out.println(vaccine+"백신 등록 성공");
-		}
-	}
-
-	public static void getVaccine(Vaccine vaccine) {
-		if(vaccine == null) {
-			System.out.println("요청하신 백신 정보는 존재하지 않습니다.");
-		}else {
-			System.out.println(vaccine);
-		}
+	//null값 입력 시 출력
+	public static void nullMessage() {
+		System.out.println("입력값이 null이거나 비어있습니다.");
 	}
 	
-	//모든 정보 출력
-	public static void hospitalAllView(List<Hospital> hospital) {
-		if (hospital != null) {
-			int length = hospital.size(); // 저장된 데이터 개수 반환
+	//보류_다음 백신 날짜 출력
+	public static void showNextVaccineDate(Users user) {
+		System.out.println(user.getUserName()+"님 1차 백신 날짜 :"+user.getDate1() +"2차 백신 예정일은 :" +user.getDate2()+" 입니다.");
+	}
 
-			if (length != 0) {
-				hospital.forEach(v -> System.out.println(v));
-			} else {
-				System.out.println("요청하신 정보는 없습니다");
-			}
-		} else {
-			System.out.println("요청하신 정보는 없습니다");
-		}
-	}
-	
-	//모든 정보 출력
-	public static void hospitalAllView(ArrayList<Hospital> hospital) {
-		if (hospital != null) {
-			int length = hospital.size(); // 저장된 데이터 개수 반환
-
-			if (length != 0) {
-				hospital.forEach(v -> System.out.println(v));
-			} else {
-				System.out.println("요청하신 정보는 없습니다");
-			}
-		} else {
-			System.out.println("요청하신 정보는 없습니다");
-		}
-	}
-	
-	//특정 병원 출력
-	public static void hospitalView(Hospital hospital) {
-		if(hospital != null) {
-			System.out.println(hospital);
-		}else {
-			System.out.println("해당 병원은 없습니다");
-		}
-	}
-	
-	// Hospital insert 성공, 실패시 메시지 출력 -
-	public static void insertHospitalView(boolean result, String hospitalName) {
-		if (result == true) {
-			System.out.println("\n요청하신 [병원 : " + hospitalName + "] insert 완료");
-		} else {
-			System.out.println("\n요청하신 [병원 : " + hospitalName + "] insert 실패, id 재확인 하세요");
-		}
-	}
-	
-	// Hospital update 성공, 실패시 메시지 출력 -
-	public static void updateHospitalView(boolean result, String hospitalName) {
-		if (result == true) {
-			System.out.println("\n요청하신 [병원 : " + hospitalName + "]의 병원 정보 수정 완료");
-		} else {
-			System.out.println("\n요청하신 [병원 : " + hospitalName + "] 수정 실패, 병원을 재확인 하세요");
-		}
-	}
-	
-	// Hospital update 성공, 실패시 메시지 출력 -
-	public static void updateLocationView(boolean result, String hospitalName) {
-		if (result == true) {
-			System.out.println("\n요청하신 [병원 : " + hospitalName + "]의 지역 정보 수정 완료");
-		} else {
-			System.out.println("\n요청하신 [병원 : " + hospitalName + "] 수정 실패, 병원을 재확인 하세요");
-		}
-	}
-	
-	// Hospital update 성공, 실패시 메시지 출력 -
-	public static void updateVaccineView(boolean result, String hospitalName) {
-		if (result == true) {
-			System.out.println("\n요청하신 [병원 : " + hospitalName + "]의 백신 정보 수정 완료");
-		} else {
-			System.out.println("\n요청하신 [병원 : " + hospitalName + "] 수정 실패, 병원을 재확인 하세요");
-		}
-	}
-	
-	// Hospital delete 성공, 실패시 메시지 출력 -
-	public static void deleteSellerView(boolean result, String hospitalName) {
-		if (result == true) {
-			System.out.println("\n요청하신 [병원 : " + hospitalName + "] delete 완료");
-		} else {
-			System.out.println("\n요청하신 [병원 : " + hospitalName + "] delete 실패, id 재확인 하세요");
-		}
-	}
-	
 }

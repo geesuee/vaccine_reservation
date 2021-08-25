@@ -1,18 +1,35 @@
 package view;
 
 import controller.Controller;
-import model.dao.UsersDAO;
-import model.entity.Hospital;
-import model.entity.Users;
-import model.entity.Vaccine;
+import controller.HospitalController;
+import controller.UsersController;
+import controller.VaccineController;
 
 public class StartView {
 	
 	
 	public static void main(String[] args) {
+		Controller.vaccineStart();
+		
+//		Controller con = Controller.getInstance();
+		
+//		HospitalController.getAllHospital();
+//		UsersController.getAllUsers();
+//		VaccineController.getAllVaccine();
+		
+		HospitalController.getHospitalLocation("송파구");
+		UsersController.getUser("배지수", 971202);
+		VaccineController.getVaccineByName("화이자");
+		
+		
+		/**
+		 * 여기도 나중에 다 같이 고쳐요!
+		 */
+		
+		
 //		System.out.println("=== user 검색 ===");
 //		Controller.getUser("배지수", 971202);
-//		
+		
 //		System.out.println("\n=== 새로운 user insert ===");
 //		Vaccine vaccine = new Vaccine("화이자", 12, 21, "mRNA", "-90도 ~ -60도", 6);
 //		Hospital hospital = new Hospital("아산병원", "송파구", 0, 4, 5);
@@ -65,9 +82,43 @@ public class StartView {
 //		System.out.println("\n=== 접종 예약 수정 성공 케이스 ===");
 //		Controller.updateUserDate(971202, 2, "20210918");
 //		Controller.nextVaccineDate(971202);
+//		
+//		System.out.println("\n=== 사용자 주소 수정 update ===");
+//		Controller.updateUserAddress(971202, "마포구");
 		
-		System.out.println("\n=== 사용자 주소 수정 update ===");
-		Controller.updateUserAddress(971202, "마포구");
+//		System.out.println("--- 모든 병원 검색 ---");
+//		con.getAllHospital();
+//		
+//		System.out.println("--- 지역으로 검색 ---");
+//		con.getHospitalLocation("송파구");
+//		
+//		System.out.println("--- 백신으로 검색 ---");
+//		con.getHospitalVaccine("화이자");
+//		
+//		System.out.println("--- 새로운 병원 저장 ---");
+//		Hospital hospital = new Hospital("야매병원", "지하", 2, 0, 0);
+//		con.addHospital(hospital);
+//		
+//		System.out.println("--- 저장 후 검색 ---");
+//		con.getAllHospital();
+//		
+//		System.out.println("--- 지역 수정 ---");
+//		con.updateHospitalLocation("야매병원", "지상");
+//		
+//		System.out.println("--- 수정 후 ---");
+//		con.getHospital("야매병원");
+//		
+//		System.out.println("--- 모두 수정 ---");
+//		con.updateHospital("야매병원", "바다위", 1, 0, 3);
+//		
+//		System.out.println("--- 수정 후 ---");
+//		con.getHospital("야매병원");
+//		
+//		System.out.println("--- 삭제 ---");
+//		con.deleteHospital("야매병원");
+//		
+//		System.out.println("--- 삭제 후 ---");
+//		con.getHospital("야매병원");
 	}
 
 }
