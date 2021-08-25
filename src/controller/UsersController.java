@@ -1,5 +1,6 @@
 package controller;
 
+import java.text.ParseException;
 import java.util.List;
 
 import model.dao.UsersDAO;
@@ -29,7 +30,7 @@ public class UsersController {
 	 */
 	
 	//보류
-	public static void nextVaccineDate(int idNum) {
+	public void getVaccineDate(int idNum) {
 		if((Integer)idNum != null) {
 			Users user = UsersDAO.getUserNextVaccineDate(idNum);
 			if(user != null) {
@@ -42,8 +43,20 @@ public class UsersController {
 		}
 	}
 	
+	//1차접종날짜 받아서 2차 접종날짜 할당
+	public String nextVaccineDate(String date, String vaccineName) {
+		String date2 = null;
+		try {
+			date2 = UsersDAO.nextVaccineDate2(date, vaccineName);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return date2;
+	}
 	
-	public static void getAllUsers() {
+	
+	public void getAllUsers() {
 		List<Users> userList = UsersDAO.getAllUsers();
 		
 		if(userList.size() > 0) {
@@ -53,7 +66,7 @@ public class UsersController {
 		}
 	}
 	
-	public static void getAllUsersByHospital(String hospitalName) {
+	public void getAllUsersByHospital(String hospitalName) {
 		if(hospitalName != null && !hospitalName.equals("")) {
 			List<Users> userList = UsersDAO.getAllUsersByHospital(hospitalName);
 			
@@ -68,7 +81,7 @@ public class UsersController {
 	}
 	
 	
-	public static void getUser(String name, int idNum) {
+	public void getUser(String name, int idNum) {
 		if(name != null && !name.equals("") && (Integer)idNum != null) {
 			Users user = UsersDAO.getUser(name, idNum);
 			if(user != null) {
@@ -80,9 +93,23 @@ public class UsersController {
 			EndView.nullMessage();
 		}
 	}
-
 	
-	public static void addUser(Users user) {
+	public Users getUser2(int idNum) {
+		return UsersDAO.getUserById(idNum);
+	}
+
+	public boolean getUserBoolean(int idNum) {
+		boolean result = false;
+		Users user = UsersDAO.getUserById(idNum);
+		
+		if(user != null) {
+			result = true;
+		}
+		
+		return result;
+	}
+	
+	public void addUser(Users user) {
 		if(user != null) {
 			if(UsersDAO.addUser(user)) {
 				EndView.successMessage("예약자 : " + user.getUserName() + "] 접종 예약");
@@ -95,7 +122,7 @@ public class UsersController {
 	}
 
 
-	public static void updateUserDate(int idNum, int dateNum, String date) {
+	public void updateUserDate(int idNum, int dateNum, String date) {
 		if((Integer)idNum != null && (Integer)dateNum != null && date != null && !date.equals("")) {
 			if(UsersDAO.updateUserDate(idNum, dateNum, date)) {
 				EndView.successMessage("예약자 주민등록 번호 : " + idNum + "] 접종일 수정");
@@ -108,7 +135,7 @@ public class UsersController {
 	}
 
 	
-	public static void updateUserAddress(int idNum, String address) {
+	public void updateUserAddress(int idNum, String address) {
 		if((Integer)idNum != null && address != null && !address.equals("")) {
 			if(UsersDAO.updateUserAddress(idNum, address)) {
 				EndView.successMessage("예약자 주민등록 번호 : " + idNum + "] 주소 수정");
@@ -121,7 +148,7 @@ public class UsersController {
 	}
 
 	
-	public static void deleteUser(int idNum) {
+	public void deleteUser(int idNum) {
 		if((Integer)idNum != null) {
 			if(UsersDAO.deleteUser(idNum)) {
 				EndView.successMessage("예약자 주민등록 번호 : " + idNum + "] 접종 예약 취소");

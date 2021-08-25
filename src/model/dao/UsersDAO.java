@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 
 import model.entity.Users;
 import util.PublicCommon;
@@ -92,6 +93,28 @@ public class UsersDAO {
 			return user;
 		}
 	}
+	
+	public static String nextVaccineDate2(String date, String vaccineName) throws ParseException {
+		SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
+
+		Calendar cal = Calendar.getInstance();
+		Date dt = dtFormat.parse(date);
+		cal.setTime(dt);
+		int day = 0;
+		if("az".equals(vaccineName) || "AZ".equals(vaccineName)) {
+			day = 84;
+		}else if("화이자".equals(vaccineName)) {
+			day = 42;
+		}else if("모더나".equals(vaccineName)) {
+			day = 42;
+		}else {
+			System.out.println("잘못된 입력");
+		}
+		
+		cal.add(Calendar.DATE,day );
+		
+		return dtFormat.format(cal.getTime());
+	}
 
 	
 	public static List<Users> getAllUsers() {
@@ -161,11 +184,16 @@ public class UsersDAO {
 	}
 
 
-	private static Users getUserById(int idNum) {
+	public static Users getUserById(int idNum) {
 		EntityManager em = PublicCommon.getEntityManager();
+		Users user = null;
 		
 		try {
-			Users user = (Users) em.createNamedQuery("Users.findByIdNum").setParameter("id", idNum).getSingleResult();
+			try {
+				user = (Users) em.createNamedQuery("Users.findByIdNum").setParameter("id", idNum).getSingleResult();
+			}catch(NoResultException n) {
+				
+			}
 
 			if(user != null) {
 				return user;

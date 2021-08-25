@@ -1,9 +1,14 @@
 Manifest-Version: 1.0
 <<<<<<< HEAD
+<<<<<<< HEAD
 Built-By: HyeongRim
 =======
 Built-By: ￫ﾰﾰ￬ﾧﾀ￬ﾈﾘ
 >>>>>>> d5474277db56b71fbf9dcd77374b9eb056978425
 Build-Jdk: 1.8.0_201
+=======
+Built-By: Playdata
+Build-Jdk: 1.8.0_291
+>>>>>>> 0bbbdaf476d237fe7df3229092ae7f2c590d93ae
 Created-By: Maven Integration for Eclipse
 

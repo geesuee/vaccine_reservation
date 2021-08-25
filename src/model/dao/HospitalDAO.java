@@ -8,6 +8,7 @@ import javax.persistence.EntityTransaction;
 
 import exception.NotExistException;
 import model.entity.Hospital;
+import model.entity.Vaccine;
 import util.PublicCommon;
 
 public class HospitalDAO {
@@ -83,14 +84,14 @@ public class HospitalDAO {
 	}
 	
 	//지역으로 병원 검색
-	public static Hospital getHospitalByLocation(String location) {
+	public static List<Hospital> getHospitalByLocation(String location) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
-		Hospital hospital = null;
+		List<Hospital> hospital = null;
 		tx.begin();
 		
 		try {
-			hospital = (Hospital)em.createNamedQuery("Hospital.findByLocation").setParameter("location", location).getSingleResult();
+			hospital = em.createNamedQuery("Hospital.findByLocation").setParameter("location", location).getResultList();
 			
 			tx.commit();
 		}catch(Exception e) {
@@ -121,6 +122,38 @@ public class HospitalDAO {
 			}else if(vaccineName.equals("AZ") | vaccineName.equals("az")) {
 				all.stream().filter(v -> v.getAz() > 0).forEach(v -> list.add(v));
 			}
+			
+			tx.commit();
+		}catch(Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+		}finally {
+			em.close();
+			em = null;
+		}
+		
+		return list;
+	}
+	
+	//백신이 있는 병원 검색
+	public static ArrayList<Hospital> getHospitalByVaccine(List<Vaccine> vaccine) {
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		ArrayList<Hospital> list = new ArrayList<>(); 
+		tx.begin();
+		
+		try {
+			List<Hospital> all = getAllHospital();
+			
+			vaccine.stream().forEach(v -> {
+			if(v.getVaccineName().equals("화이자")) {
+				all.stream().filter(h -> h.getPfizer() > 0).forEach(h -> list.add(h));
+			}else if(v.getVaccineName().equals("모더나")) {
+				all.stream().filter(h -> h.getModerna() > 0).forEach(h -> list.add(h));
+			}else if(v.getVaccineName().equals("AZ") | v.getVaccineName().equals("az")) {
+				all.stream().filter(h -> h.getAz() > 0).forEach(h -> list.add(h));
+			}});
+			
 			
 			tx.commit();
 		}catch(Exception e) {
