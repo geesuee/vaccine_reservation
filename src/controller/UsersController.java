@@ -50,7 +50,7 @@ public class UsersController {
 		List<Users> userList = UsersDAO.getAllUsers();
 		
 		if(userList.size() > 0) {
-			EndView.showUsersList(userList);
+			EndView.allView(userList);
 		}else {
 			EndView.errorMessage("접종 예약자 정보가 없습니다.");
 		}

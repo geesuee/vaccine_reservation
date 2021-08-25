@@ -34,7 +34,7 @@ public class VaccineController {
 		List<Vaccine> vaccineList = VaccineDAO.getAllVaccine();
 		
 		if(vaccineList.size() > 0) {
-			EndView.showVaccinList(vaccineList);
+			EndView.allView(vaccineList);
 		}else {
 			EndView.errorMessage("백신 정보가 없습니다.");
 		}

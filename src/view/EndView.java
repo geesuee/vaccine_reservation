@@ -11,6 +11,9 @@ public class EndView {
 	// 메소드명 방식 통일 필요
 	// 공통으로 쓸 수 있는 메소드 통합 필요
 	
+	public static void allView(List all) {
+		all.forEach(v -> System.out.println(v));
+	}
 	/**
 	 * Users EndView
 	 * - showNextVaccineDate
@@ -92,17 +95,7 @@ public class EndView {
 	
 	//모든 정보 출력
 	public static void hospitalAllView(List<Hospital> hospital) {
-<<<<<<< HEAD
-			int length = hospital.size(); // 저장된 데이터 개수 반환
-
-			if (length != 0) {
-				hospital.forEach(v -> System.out.println(v));
-			} else {
-				System.out.println("요청하신 정보는 없습니다");
-			} 
-=======
 		hospital.forEach(v -> System.out.println(v));
->>>>>>> a0f0992274b3c7cc81a24559489eec5b77f1b68e
 	}
 
 	//특정 병원 출력
