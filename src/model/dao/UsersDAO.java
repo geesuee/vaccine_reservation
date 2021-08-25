@@ -19,31 +19,27 @@ public class UsersDAO {
 	
 	/** 
 	 * UsersDAO
-	 * - getNextVaccineDate
+	 * 
 	 * - getUserNextVaccineDate
 	 * - (private) nextVaccineDate
-	 * - **nextVaccineDate2
+	 * 
 	 * - getAllUsers
 	 * - getAllUsersByHospital
+	 * 
 	 * - getUser
-	 * - **getUserById
+	 * - (private)getUserById
+	 * 
 	 * - addUser
+	 * 
 	 * - updateUserDate
+	 * - calNextVaccineDate
 	 * - updateUserAddress
 	 * 
 	 * - deleteUser
 	 */
 	
-	// 1차 접종일로 2차 접종일 계산해서 반환하는 메소드
-	// ** 아래 메소드(nextVaccineDate)랑 겹치는듯?
-	public static String getNextVaccineDate(String date1, int period) {
-		LocalDate dateOne = LocalDate.parse(date1, DateTimeFormatter.BASIC_ISO_DATE);
-		LocalDate dateTwo = dateOne.plusDays(period);
 
-		return dateTwo.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-	}
-
-	//영훈님
+	// 접종 예약자 별 접종 예약일 조회1
 	public static Users getUserNextVaccineDate(int idNum) {
 		EntityManager em = PublicCommon.getEntityManager();
 		Users user = em.find(Users.class, idNum);
@@ -65,7 +61,7 @@ public class UsersDAO {
 		}
 	}
 
-	//영훈님
+	// 접종 예약자 별 접종 예약일 조회2 (위 메소드와 연결)
 	private static Users nextVaccineDate(Users user) throws ParseException {
 		SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
 		String userName = user.getUserName();
@@ -95,29 +91,7 @@ public class UsersDAO {
 		}
 	}
 	
-	public static String nextVaccineDate2(String date, String vaccineName) throws ParseException {
-		SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
-
-		Calendar cal = Calendar.getInstance();
-		Date dt = dtFormat.parse(date);
-		cal.setTime(dt);
-		int day = 0;
-		if("az".equals(vaccineName) || "AZ".equals(vaccineName)) {
-			day = 56;
-		}else if("화이자".equals(vaccineName)) {
-			day = 21;
-		}else if("모더나".equals(vaccineName)) {
-			day = 28;
-		}else {
-			System.out.println("잘못된 입력");
-		}
-		
-		cal.add(Calendar.DATE,day );
-		
-		return dtFormat.format(cal.getTime());
-	}
-
-	
+	// 접종 예약자 정보 다중(전체) 조회
 	public static List<Users> getAllUsers() {
 		EntityManager em = PublicCommon.getEntityManager();
 		List<Users> userList = new ArrayList<>();
@@ -134,7 +108,7 @@ public class UsersDAO {
 		return userList;
 	}
 	
-	
+	// 병원 별 접종 예약자 정보 다중 조회
 	public static List<Users> getAllUsersByHospital(String hospitalName) {
 		EntityManager em = PublicCommon.getEntityManager();
 		List<Users> userList = new ArrayList<>();
@@ -151,7 +125,7 @@ public class UsersDAO {
 		return userList;
 	}
 	
-	
+	// 접종 예약자 정보 단일 조회1
 	public static Users getUser(String name, int idNum) {
 		EntityManager em = PublicCommon.getEntityManager();
 		List<Users> userList = new ArrayList<>();
@@ -174,8 +148,8 @@ public class UsersDAO {
 		return null;
 	}
 
-
-	public static Users getUserById(int idNum) {
+	// 접종 예약자 정보 단일 조회2 (위 메소드와 연결)
+	private static Users getUserById(int idNum) {
 		EntityManager em = PublicCommon.getEntityManager();
 		Users user = null;
 		
@@ -195,7 +169,7 @@ public class UsersDAO {
 		return null;
 	}
 
-
+	// 접종 예약자 추가
 	public static boolean addUser(Users user) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -219,7 +193,7 @@ public class UsersDAO {
 		return result;
 	}
 
-
+	// 접종 날짜 수정
 	public static boolean updateUserDate(int idNum, int dateNum, String date) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -241,7 +215,7 @@ public class UsersDAO {
 				if(dateNum == 1) {
 					if(date1.isAfter(todaysDate) && newDate.isAfter(date1) && newDate.isAfter(todaysDate)) {
 						user.setDate1(newDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-						user.setDate2(getNextVaccineDate(user.getDate1(), user.getVaccine().getPeriod()));
+						user.setDate2(calNextVaccineDate(user.getDate1(), user.getVaccine().getPeriod()));
 
 						tx.commit();
 						result = true;
@@ -271,7 +245,22 @@ public class UsersDAO {
 		return result;
 	}
 
+	// 백신 종류별 2차 접종일 연산 및 반환
+	public static String calNextVaccineDate(String date1, int period) {
+		String nextVaccineDate = null;
+		
+		LocalDate todaysDate = LocalDate.now();
+		LocalDate dateOne = LocalDate.parse(date1, DateTimeFormatter.BASIC_ISO_DATE);
+		LocalDate dateTwo = dateOne.plusDays(period);
+		
+		if(dateOne.isAfter(todaysDate)) {
+			nextVaccineDate = dateTwo.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+		}
+		
+		return nextVaccineDate;
+	}
 
+	// 접종 예약자 주소 수정
 	public static boolean updateUserAddress(int idNum, String address) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -299,7 +288,7 @@ public class UsersDAO {
 		return result;
 	}
 	
-	
+	// 접종 예약자 삭제
 	public static boolean deleteUser(int idNum) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();

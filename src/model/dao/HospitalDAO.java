@@ -14,32 +14,30 @@ public class HospitalDAO {
 	
 	/**
 	 * Hospital DAO 
+	 * 
 	 * - getAllHospital
 	 * - getHospitalByName
 	 * - getHospitalByLocation
 	 * - getHospitalByVaccine
-	 * - getHospitalByVaccineName
-	 * - getHospitalVaccineTotal
+	 * - getHospitalVaccine
+	 * 
 	 * - addHospital
+	 * 
 	 * - updateHospitalLocation
 	 * - updateHospitalAllVaccine
 	 * - updateHospitalVaccine
+	 * 
 	 * - deleteHospital
 	 */
 	
+	// 병원 정보 다중(전체) 조회
 	public static List<Hospital> getAllHospital(){
 		EntityManager em = PublicCommon.getEntityManager();
-		EntityTransaction tx = em.getTransaction();
 		List<Hospital> hospitalList = new ArrayList<>();
-		
-		tx.begin();
 		
 		try {
 			hospitalList = em.createQuery("select h from Hospital h").getResultList();
-			
-			tx.commit();
 		}catch(Exception e) {
-			tx.rollback();
 			e.printStackTrace();
 		}finally {
 			em.close();
@@ -49,20 +47,14 @@ public class HospitalDAO {
 		return hospitalList;
 	}
 	
-	
+	// 병원 정보 단일 조회 - 병원 이름
 	public static Hospital getHospitalByName(String hospitalName) {
 		EntityManager em = PublicCommon.getEntityManager();
-		EntityTransaction tx = em.getTransaction();
 		Hospital hospital = null;
-		
-		tx.begin();
 		
 		try {
 			hospital = em.find(Hospital.class, hospitalName);
-			
-			tx.commit();
 		}catch(Exception e) {
-			tx.rollback();
 			e.printStackTrace();
 		}finally {
 			em.close();
@@ -72,20 +64,14 @@ public class HospitalDAO {
 		return hospital;
 	}
 	
-
+	// 병원 정보 다중 조회 - 병원 위치
 	public static List<Hospital> getHospitalByLocation(String location) {
 		EntityManager em = PublicCommon.getEntityManager();
-		EntityTransaction tx = em.getTransaction();
 		List<Hospital> hospitalList = new ArrayList<>();
-		
-		tx.begin();
 		
 		try {
 			hospitalList = em.createNamedQuery("Hospital.findByLocation").setParameter("location", location).getResultList();
-			
-			tx.commit();
 		}catch(Exception e) {
-			tx.rollback();
 			e.printStackTrace();
 		}finally {
 			em.close();
@@ -95,60 +81,24 @@ public class HospitalDAO {
 		return hospitalList;
 	}
 	
-	
-	public static ArrayList<Hospital> getHospitalByVaccineName(String vaccineName) {
-		EntityManager em = PublicCommon.getEntityManager();
-		EntityTransaction tx = em.getTransaction();
-		ArrayList<Hospital> hospitalList = new ArrayList<>(); 
-		
-		tx.begin();
-		
-		try {
-			List<Hospital> all = getAllHospital();
-			
-			if(vaccineName.equals("화이자")) {
-				all.stream().filter(v -> v.getPfizer() > 0).forEach(v -> hospitalList.add(v));
-			}else if(vaccineName.equals("모더나")) {
-				all.stream().filter(v -> v.getModerna() > 0).forEach(v -> hospitalList.add(v));
-			}else if(vaccineName.equals("AZ") | vaccineName.equals("az")) {
-				all.stream().filter(v -> v.getAz() > 0).forEach(v -> hospitalList.add(v));
-			}
-			
-			tx.commit();
-		}catch(Exception e) {
-			tx.rollback();
-			e.printStackTrace();
-		}finally {
-			em.close();
-			em = null;
-		}
-		
-		return hospitalList;
-	}
-	
-
+	// 병원 정보 다중 조회 - 보유 백신
 	public static ArrayList<Hospital> getHospitalByVaccine(List<Vaccine> vaccine) {
 		EntityManager em = PublicCommon.getEntityManager();
-		EntityTransaction tx = em.getTransaction();
 		ArrayList<Hospital> hospitalList = new ArrayList<>(); 
-		
-		tx.begin();
 		
 		try {
 			List<Hospital> all = getAllHospital();
 			
 			vaccine.stream().forEach(v -> {
-			if(v.getVaccineName().equals("화이자")) {
-				all.stream().filter(h -> h.getPfizer() > 0).forEach(h -> hospitalList.add(h));
-			}else if(v.getVaccineName().equals("모더나")) {
-				all.stream().filter(h -> h.getModerna() > 0).forEach(h -> hospitalList.add(h));
-			}else if(v.getVaccineName().equals("AZ") | v.getVaccineName().equals("az")) {
-				all.stream().filter(h -> h.getAz() > 0).forEach(h -> hospitalList.add(h));
-			}});
+				if(v.getVaccineName().equals("화이자")) {
+					all.stream().filter(h -> h.getPfizer() > 0).forEach(h -> hospitalList.add(h));
+				}else if(v.getVaccineName().equals("모더나")) {
+					all.stream().filter(h -> h.getModerna() > 0).forEach(h -> hospitalList.add(h));
+				}else if(v.getVaccineName().equals("AZ") | v.getVaccineName().equals("az")) {
+					all.stream().filter(h -> h.getAz() > 0).forEach(h -> hospitalList.add(h));
+				}});
 			
-			tx.commit();
 		}catch(Exception e) {
-			tx.rollback();
 			e.printStackTrace();
 		}finally {
 			em.close();
@@ -158,38 +108,31 @@ public class HospitalDAO {
 		return hospitalList;
 	}
 	
-
-	public static int getHospitalVaccineTotal(String hospitalName, String vaccineName) {
+	// 병원 보유 백신 개수 조회
+	public static int getHospitalVaccine(String hospitalName, String vaccineName) {
 		EntityManager em = PublicCommon.getEntityManager();
-		EntityTransaction tx = em.getTransaction();
-		int result = 0;
-		
-		tx.begin();
+		int vaccineCount = -1;
 		
 		try {
 			Hospital hospital = em.find(Hospital.class, hospitalName);
-			
-			if(vaccineName.equals("화이자")) {
-				result = hospital.getPfizer();
-			}else if(vaccineName.equals("모더나")) {
-				result = hospital.getModerna();
-			}else if(vaccineName.equals("AZ") | vaccineName.equals("az")) {
-				result = hospital.getAz();
+			if(vaccineName == "화이자") {
+				vaccineCount = hospital.getPfizer();
+			}else if(vaccineName == "모더나") {
+				vaccineCount = hospital.getModerna();
+			}else if(vaccineName == "AZ") {
+				vaccineCount = hospital.getAz();
 			}
-			
-			tx.commit();
 		}catch(Exception e) {
-			tx.rollback();
 			e.printStackTrace();
 		}finally {
 			em.close();
 			em = null;
 		}
 		
-		return result;
+		return vaccineCount;
 	}
-	
-	
+
+	// 병원 추가
 	public static boolean addHospital(Hospital hospital) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -212,8 +155,8 @@ public class HospitalDAO {
 		
 		return result;
 	}
-	
-	
+
+	// 병원 위치 수정
 	public static boolean updateHospitalLocation(String hospitalName, String location) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -240,9 +183,8 @@ public class HospitalDAO {
 		
 		return result;
 	}
-	
-	
 
+	// 병원 보유 백신 개수 다중(전체) 수정
 	public static boolean updateHospitalAllVaccine(String hospitalName, int pfizer, int moderna, int az) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -272,7 +214,7 @@ public class HospitalDAO {
 		return result;
 	}
 	
-	
+	// 병원 보유 백신 개수 단일 수정
 	public static boolean updateHospitalVaccine(String hospitalName, String vaccineName, int num) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();
@@ -307,7 +249,7 @@ public class HospitalDAO {
 		return result;
 	}
 	
-
+	// 병원 삭제
 	public static boolean deleteHospital(String hospitalName) {
 		EntityManager em = PublicCommon.getEntityManager();
 		EntityTransaction tx = em.getTransaction();

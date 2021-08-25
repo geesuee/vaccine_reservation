@@ -14,12 +14,11 @@ public class VaccineDAO {
 	/**
 	 * VaccineDAO 
 	 * - getAllVaccine 
-	 * - getVaccineByName 
+	 * - getVaccine
 	 * - getVaccineByTargetAge
-	 * - addVaccine
+	 * 
 	 * - updateVaccine 
 	 * - updateVaccineTargetAge
-	 * - deleteVaccine
 	 */
 
 	public static List<Vaccine> getAllVaccine() {
@@ -39,7 +38,7 @@ public class VaccineDAO {
 	}
 
 
-	public static Vaccine getVaccineByName(String vaccinName) {
+	public static Vaccine getVaccine(String vaccinName) {
 		EntityManager em = PublicCommon.getEntityManager();
 		Vaccine vaccine = null;
 		
@@ -72,30 +71,6 @@ public class VaccineDAO {
 		}
 		
 		return vaccineList;
-	}
-
-	
-	public static boolean addVaccine(Vaccine vaccine) {
-		EntityManager em = PublicCommon.getEntityManager();
-		EntityTransaction tx = em.getTransaction();
-		boolean result = false;
-		
-		tx.begin();
-		
-		try {
-			em.persist(vaccine);
-
-			tx.commit();
-			result = true;
-		} catch (Exception e) {
-			tx.rollback();
-			e.printStackTrace();
-		} finally {
-			em.close();
-			em = null;
-		}
-		
-		return result;
 	}
 
 
@@ -159,30 +134,55 @@ public class VaccineDAO {
 	}
 
 
-	public static boolean deleteVaccine(String vaccineName) {
-		EntityManager em = PublicCommon.getEntityManager();
-		EntityTransaction tx = em.getTransaction();
-		boolean result = false;
-
-		tx.begin();
-		try {
-			Vaccine curVaccine = em.find(Vaccine.class, vaccineName);
-
-			if (curVaccine != null) {
-				em.remove(curVaccine);
-				result = true;
-			}
-
-			tx.commit();
-		} catch (Exception e) {
-			tx.rollback();
-			e.printStackTrace();
-		} finally {
-			em.close();
-			em = null;
-		}
-		
-		return result;
-	}
+	
+//	public static boolean addVaccine(Vaccine vaccine) {
+//		EntityManager em = PublicCommon.getEntityManager();
+//		EntityTransaction tx = em.getTransaction();
+//		boolean result = false;
+//		
+//		tx.begin();
+//		
+//		try {
+//			em.persist(vaccine);
+//
+//			tx.commit();
+//			result = true;
+//		} catch (Exception e) {
+//			tx.rollback();
+//			e.printStackTrace();
+//		} finally {
+//			em.close();
+//			em = null;
+//		}
+//		
+//		return result;
+//	}
+	
+	
+//	public static boolean deleteVaccine(String vaccineName) {
+//		EntityManager em = PublicCommon.getEntityManager();
+//		EntityTransaction tx = em.getTransaction();
+//		boolean result = false;
+//
+//		tx.begin();
+//		try {
+//			Vaccine curVaccine = em.find(Vaccine.class, vaccineName);
+//
+//			if (curVaccine != null) {
+//				em.remove(curVaccine);
+//				result = true;
+//			}
+//
+//			tx.commit();
+//		} catch (Exception e) {
+//			tx.rollback();
+//			e.printStackTrace();
+//		} finally {
+//			em.close();
+//			em = null;
+//		}
+//		
+//		return result;
+//	}
 
 }

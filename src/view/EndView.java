@@ -42,5 +42,4 @@ public class EndView {
 	public static void showNextVaccineDate(Users user) {
 		System.out.println("\n" + user.getUserName()+"님 1차 백신 날짜 : "+user.getDate1() +"2차 백신 날짜 : " +user.getDate2()+" 입니다.");
 	}
-
 }

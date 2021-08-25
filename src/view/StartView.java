@@ -8,7 +8,9 @@ public class StartView {
 	
 	
 	public static void main(String[] args) throws IOException {
-		Controller.vaccineStart();
+		Controller controller = Controller.getInstance();
+		
+		controller.vaccineStart();
 	}
 
 }
