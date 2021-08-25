@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.List;
+
 import model.dao.UsersDAO;
 import model.entity.Users;
 import view.EndView;
@@ -18,6 +20,8 @@ public class UsersController {
 	 * Users Controller
 	 * - nextVaccineDate
 	 * 
+	 * - getAllUsers
+	 * - getAllUsersByHospital
 	 * - getUser
 	 * 
 	 * - createUser -> addUser
@@ -38,6 +42,29 @@ public class UsersController {
 			}
 		}else {
 			EndView.errorMessage("주민등록번호 앞자리는 null일 수 없습니다.");
+		}
+	}
+	
+	
+	public static void getAllUsers() {
+		List<Users> userList = UsersDAO.getAllUsers();
+		
+		if(userList.size() > 0) {
+			EndView.showUsersList(userList);
+		}else {
+			EndView.errorMessage("접종 예약자 정보가 없습니다.");
+		}
+	}
+	
+	public static void getAllUsersByHospital(String hospitalName) {
+		if(hospitalName != null && !hospitalName.equals("")) {
+			List<Users> userList = UsersDAO.getAllUsersByHospital(hospitalName);
+			
+			if(userList.size() > 0) {
+				EndView.showUsersList(userList);
+			}else {
+				EndView.errorMessage(hospitalName + "의 접종 예약자 정보가 없습니다.");
+			}
 		}
 	}
 	

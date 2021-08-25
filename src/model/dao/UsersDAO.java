@@ -22,6 +22,8 @@ public class UsersDAO {
 	 * - getUserNextVaccineDate
 	 * - (private) nextVaccineDate
 	 * 
+	 * - getAllUsers
+	 * - getAllUsersByHospital
 	 * - getUser
 	 * - (private) getUserById
 	 * 
@@ -94,6 +96,52 @@ public class UsersDAO {
 		}
 	}
 
+	
+	public static List<Users> getAllUsers() {
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		List<Users> userList = null;
+		
+		tx.begin();
+		
+		try {
+			userList = em.createQuery("select u from Users u").getResultList();
+			
+			tx.commit();
+		}catch(Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+		}finally {
+			em.close();
+			em = null;
+		}
+		
+		return userList;
+	}
+	
+	
+	public static List<Users> getAllUsersByHospital(String hospitalName) {
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		List<Users> userList = null;
+		
+		tx.begin();
+		
+		try {
+			userList = em.createQuery("select u from Users u where hospital_name = :hospital").setParameter("hospital", hospitalName).getResultList();
+			
+			tx.commit();
+		}catch(Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+		}finally {
+			em.close();
+			em = null;
+		}
+		
+		return userList;
+	}
+	
 	
 	public static Users getUser(String name, int idNum) {
 		EntityManager em = PublicCommon.getEntityManager();
