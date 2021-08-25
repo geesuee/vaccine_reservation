@@ -27,7 +27,7 @@ public class VaccineController {
 	 * - deleteVaccine
 	 */
 	
-	public static void getAllVaccine() {
+	public void getAllVaccine() {
 		List<Vaccine> vaccineList = VaccineDAO.getAllVaccine();
 		
 		if(vaccineList.size() > 0) {
@@ -38,7 +38,7 @@ public class VaccineController {
 	}
 	
 	
-	public static void getVaccineByName(String vaccinName) {
+	public void getVaccineByName(String vaccinName) {
 		if(vaccinName != null && !vaccinName.equals("")) {
 			Vaccine vaccine = VaccineDAO.getVaccineByName(vaccinName);
 			if(vaccine != null) {
@@ -50,9 +50,13 @@ public class VaccineController {
 			EndView.nullMessage();
 		}
 	}
+	
+	public Vaccine getVaccineName(String vaccinName) {
+		return VaccineDAO.getVaccineByName(vaccinName);
+	}
 
 	
-	public static void getVaccineByTargetAge(int targetAge) {
+	public void getVaccineByTargetAge(int targetAge) {
 		if((Integer)targetAge !=null) {
 			List<Vaccine> vaccineList = VaccineDAO.getVaccineByTargetAge(targetAge);
 			
@@ -65,10 +69,14 @@ public class VaccineController {
 			EndView.nullMessage();
 		}
 	}
+	
+	public List<Vaccine> getVaccineAge(int age) {
+		return VaccineDAO.getVaccineByTargetAge(age);
+	}
 
 	
 	//객체를 받아오는 방식으로 수정  // 데이터를 받아오는 곳, startView로 이동 예정.
-	public static void addVaccine(Vaccine vaccine ) {
+	public void addVaccine(Vaccine vaccine ) {
 		
 //			Scanner sc = new Scanner(System.in);
 //			System.out.println("백신 명을 입력하세요");
@@ -104,7 +112,7 @@ public class VaccineController {
 // -------------------------------------------------------------------------------
 	
 	// 이거는 제가 잘 모르겠어서 뒀습니다ㅜ    //파라미터로 받기  백신네임 플랫폼 온도
-	public static void updateVaccine(String vaccineName,String platform,String temper) {
+	public void updateVaccine(String vaccineName,String platform,String temper) {
 		if(vaccineName != null && !vaccineName.equals("")) {
 			//수정 데이터, 객체 입력 
 //			Vaccine updateVaccine = new Vaccine(vaccineName,30,0,"바이러스 벡터","-25도 ~ 15도",8);
@@ -122,7 +130,7 @@ public class VaccineController {
 	
 // ---------------------------------------------------------------------------------
 
-	public static void updateVaccineTargetAge(String vaccineName, int age) {
+	public void updateVaccineTargetAge(String vaccineName, int age) {
 		if(vaccineName != null && !vaccineName.equals("") && (Integer)age !=null) {
 			
 			if(VaccineDAO.updateVaccineTargetAge(vaccineName, age)) {
@@ -139,7 +147,7 @@ public class VaccineController {
 //	-----------------------------------------------------------------------------------------
 	
 	//여기 DAO가 조금 수정되면 좋을 것 같아서 우선 그대로 뒀습니다!
-	public static void deleteVaccine(String vaccineName) {
+	public void deleteVaccine(String vaccineName) {
 		if(vaccineName != null && !vaccineName.equals("")) {
 			
 			if(VaccineDAO.deleteVaccine(vaccineName)) {
