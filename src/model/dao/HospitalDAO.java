@@ -167,6 +167,36 @@ public class HospitalDAO {
 		return list;
 	}
 	
+	//해당 백신 수량 반환
+	public static int getHospitalVaccineTotal(String hospitalName, String vaccineName) {
+		EntityManager em = PublicCommon.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		int result = 0;
+		tx.begin();
+		
+		try {
+			Hospital hospital = em.find(Hospital.class, hospitalName);
+			
+			if(vaccineName.equals("화이자")) {
+				result = hospital.getPfizer();
+			}else if(vaccineName.equals("모더나")) {
+				result = hospital.getModerna();
+			}else if(vaccineName.equals("AZ") | vaccineName.equals("az")) {
+				result = hospital.getAz();
+			}
+			
+			tx.commit();
+		}catch(Exception e) {
+			tx.rollback();
+			e.printStackTrace();
+		}finally {
+			em.close();
+			em = null;
+		}
+		
+		return result;
+	}
+	
 	//새로운 병원 저장
 	public static boolean addHospital(Hospital hospital) {
 		EntityManager em = PublicCommon.getEntityManager();

@@ -80,6 +80,16 @@ public class UsersController {
 		}
 	}
 	
+	public boolean getAllUsersByHospitalBoolean(String hospitalName) {
+		List<Users> userList = UsersDAO.getAllUsersByHospital(hospitalName);
+		
+		if(userList.size() > 0) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 	
 	public void getUser(String name, int idNum) {
 		if(name != null && !name.equals("") && (Integer)idNum != null) {

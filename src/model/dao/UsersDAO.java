@@ -102,11 +102,11 @@ public class UsersDAO {
 		cal.setTime(dt);
 		int day = 0;
 		if("az".equals(vaccineName) || "AZ".equals(vaccineName)) {
-			day = 84;
+			day = 56;
 		}else if("화이자".equals(vaccineName)) {
-			day = 42;
+			day = 21;
 		}else if("모더나".equals(vaccineName)) {
-			day = 42;
+			day = 28;
 		}else {
 			System.out.println("잘못된 입력");
 		}

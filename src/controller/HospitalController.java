@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import model.dao.HospitalDAO;
@@ -94,10 +95,10 @@ public class HospitalController {
 	}
 	
 	//해당하는 백신이 있고 주소가 같은 병원 반환
-	public ArrayList<Hospital> getReservationHospital(List<Vaccine> vaccine, String location){
+	public HashSet<Hospital> getReservationHospital(List<Vaccine> vaccine, String location){
 		List<Hospital> hospital = HospitalDAO.getHospitalByLocation(location);
 		ArrayList<Hospital> hos = HospitalDAO.getHospitalByVaccine(vaccine);
-		ArrayList<Hospital> result = new ArrayList<>();
+		HashSet<Hospital> result = new HashSet<>();
 		
 		for(Hospital h : hospital) {
 			for(int i=0; i<hos.size(); i++) {
@@ -108,6 +109,11 @@ public class HospitalController {
 		}
 		
 		return result;
+	}
+	
+	//해당 백신 수량 반환
+	public int getHospitalVaccineTotal(String hospitalName, String vaccineName) {
+		return HospitalDAO.getHospitalVaccineTotal(hospitalName, vaccineName);
 	}
 	
 	//새로운 병원 저장

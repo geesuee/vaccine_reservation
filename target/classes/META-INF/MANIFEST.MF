@@ -1,10 +1,14 @@
 Manifest-Version: 1.0
 <<<<<<< HEAD
+Built-By: HyeongRim
+=======
+<<<<<<< HEAD
 <<<<<<< HEAD
 Built-By: HyeongRim
 =======
 Built-By: ￫ﾰﾰ￬ﾧﾀ￬ﾈﾘ
 >>>>>>> d5474277db56b71fbf9dcd77374b9eb056978425
+>>>>>>> 6af6c2ec023392f9e44e284e15fe9ccf05a45474
 Build-Jdk: 1.8.0_201
 =======
 Built-By: Playdata
