@@ -42,6 +42,34 @@ public class VaccineDAO {
 		}
 	}
 
+//	public static Vaccine getVaccine(String vaccinName) {
+//		if (vaccinName != null && !vaccinName.equals("")) {
+//			EntityManager em = PublicCommon.getEntityManager();
+//			EntityTransaction tx = em.getTransaction();
+//			Vaccine vaccine = null;
+//			tx.begin();
+//
+//			try {
+//				vaccine = em.find(Vaccine.class, vaccinName);
+//
+//				if (vaccine == null) {
+//					System.out.println("백신이 존재하지 않습니다.");
+//				}
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//				tx.rollback();
+//			} finally {
+//				em.close();
+//				em = null;
+//			}
+//
+//			return vaccine;
+//		} else {
+//			EndView.errorMessage("아무것도 입력하지 않았거나 null값 입니다.");
+//			return null;
+//		}
+//	}
+
 	// 입력값 null 여부는 controller에서 체크하고 들어오지 않나용!?
 	public static Vaccine getVaccineByName(String vaccinName) {
 		EntityManager em = PublicCommon.getEntityManager();

@@ -15,6 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NamedQuery(query="select h from Hospital h where h.hospitalName=:name", name="Hospital.findByHospitalName")
+@NamedQuery(query="select h from Hospital h where h.location=:location", name="Hospital.findByLocation")
 @Entity(name="Hospital")
 public class Hospital {
 	@Id
