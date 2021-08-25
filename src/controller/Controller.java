@@ -1,10 +1,60 @@
 package controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class Controller {
 	
 	private HospitalController hc = HospitalController.getInstance();
 	private UsersController uc = UsersController.getInstance();
 	private VaccineController vc = VaccineController.getInstance();
+	
+	public static void vaccineStart() throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+		String esc = null;
+
+		try {
+			while (esc == null) {
+				System.out.println("===================사용자 유형을 선택하세요.===================");
+				System.out.println("1) 접종 예약자 \n 2) 관리자 \n 0) 시스템 끄기");				
+				System.out.println("======================================");
+				
+				int inputNum = Integer.parseInt(br.readLine());
+				
+				if(inputNum == 1) {
+					//접종
+					
+				}else if(inputNum == 2) {
+					System.out.println("===================검색 분야를 선택하세요.===================");
+					System.out.println("1) 병원 \n 2) 백신");	
+					int inputNum2 = Integer.parseInt(br.readLine());
+					
+					if(inputNum2 == 1) {
+						// 병원
+						//해당병원만 조회 / 전체 조회
+					}else if(inputNum2 == 2) {
+						//백신
+					}else {
+						//에러메세지
+					}
+					
+				}else {
+					//에러메세지
+				}
+				
+				
+				
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			br.close();
+		}
+			
+	}
+	
 	
 	/**
 	 * 1. 접종 예약자인지 확인, 관리자 인지 확인 -> EndView 출력 / Controller
@@ -42,6 +92,6 @@ public class Controller {
 	 *		- 백신 전체 수정<플랫폼, 온도>
 	 *		- 백신 접종 연령 수정
 	 *	<접종>
-	 *		- 접종 예약자 전체 조회
+	 *		- 접종 예약자 전체 조회 -> 병원
 	 */
 }

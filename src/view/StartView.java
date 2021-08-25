@@ -1,14 +1,16 @@
 package view;
 
+import controller.Controller;
 import controller.HospitalController;
 import controller.UsersController;
 import controller.VaccineController;
-import model.entity.Hospital;
 
 public class StartView {
 	
 	
 	public static void main(String[] args) {
+		Controller.vaccineStart();
+		
 //		Controller con = Controller.getInstance();
 		
 //		HospitalController.getAllHospital();
