@@ -21,14 +21,11 @@ public class UsersDAO {
 	 * - getNextVaccineDate
 	 * - getUserNextVaccineDate
 	 * - (private) nextVaccineDate
-	 * 
 	 * - getAllUsers
 	 * - getAllUsersByHospital
 	 * - getUser
 	 * - (private) getUserById
-	 * 
-	 * - createUser -> addUser
-	 * 
+	 * - addUser
 	 * - updateUserDate
 	 * - updateUserAddress
 	 * 
