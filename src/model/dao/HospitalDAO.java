@@ -11,14 +11,6 @@ import model.entity.Hospital;
 import util.PublicCommon;
 
 public class HospitalDAO {
-//	private static HospitalDAO instance = new HospitalDAO();
-//	
-//	private HospitalDAO() {};
-//	
-//	public static HospitalDAO getInstance() {
-//		return instance;
-//	}
-	
 	/**
 	 * Hospital DAO 
 	 * - notExistHospital
@@ -39,7 +31,7 @@ public class HospitalDAO {
 	
 	//병원 유무
 	//Exception처리를 왜 별도로..?
-	public void notExistHospital(String hospitalName) throws NotExistException{
+	public static void notExistHospital(String hospitalName) throws NotExistException{
 		Hospital hospital = getHospitalByName(hospitalName);
 		if(hospital == null) {
 			System.out.println("검색한 병원은 존재하지 않습니다");
