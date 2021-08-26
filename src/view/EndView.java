@@ -40,6 +40,6 @@ public class EndView {
 	
 	//다음 백신 날짜 출력
 	public static void showNextVaccineDate(Users user) {
-		System.out.println("\n" + user.getUserName()+"님 1차 백신 날짜 : "+user.getDate1() +"2차 백신 날짜 : " +user.getDate2()+" 입니다.");
+		System.out.println("\n" + user.getUserName()+"님 1차 백신 날짜 : "+user.getDate1() +" / 2차 백신 날짜 : " +user.getDate2()+" 입니다.");
 	}
 }
