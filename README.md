@@ -27,10 +27,9 @@
 [코드 리뷰 및 리팩토링](https://www.notion.so/028cb9c6d53346fc958688d636a25b9e)
 
 # 1. Database Modeling
+![vaccine](https://user-images.githubusercontent.com/87046726/130896827-09de983e-03d5-44dd-9ed0-82287bc1be20.png)
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/05e7ff3c-44ed-4348-907a-9bf74a0a3b8a/Untitled.png)
-
-![테이블 스키마.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/03d970c7-81db-4706-9115-05519e5b273b/테이블_스키마.png)
+![테이블 스키마](https://user-images.githubusercontent.com/87046726/130896891-780f45d6-1d3d-436a-935a-bbe9aeea8872.png)
 
 # 2. SQL
 
@@ -96,8 +95,8 @@
 
 - Vaccine-Project flow
 
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/cc6f2348-8362-472c-87e7-f4f5dd2234e5/Untitled.png)
-
+    ![Untitled Diagram (2)](https://user-images.githubusercontent.com/87046726/130896982-b9b43d61-c1b5-48fb-9d54-1d24fb63d598.png)
+    
 **HospitalController : 병원 관련 기능**
 
 - `getAllHospital()` : 병원 정보 전체 조회
@@ -168,7 +167,7 @@
     - 기존의 메소드를 사용하지 않거나
     - 동일한 로직을 갖지만 반환값만 다른 메소드를 만들거나 하는 과정을 거쳤고,
 
-    ![그림1.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/52e84cc9-8320-4d66-9a91-18586895b34f/그림1.png)
+    ![그림1](https://user-images.githubusercontent.com/87046726/130897044-c6689527-d27a-4048-b960-e7c69746b835.png)
 
     입출력 값을 받아 사용자 화면을 구성하는 부분에서 **Controller 안 메소드와 DAO 안 메소드를 혼재하여 사용하게 되는 문제**가 발생함...😥
 
