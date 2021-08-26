@@ -1,38 +1,28 @@
 # 백신 접종 예약 서비스
-## 💬 백신 접종 예약 서비스 개요
-
----
-
 백신 접종 예약 서비스는 사용자를 `**관리자**` , `**접종 예약자**` 로 분류하여
 
 - 관리자는 **병원, 백신, 접종 예약 현황 데이터를 조회/추가/수정/삭제**하고
 - 접종 예약자는 **본인 연령 대상 백신 확인**, **주소 인근 병원 잔여 백신 조회** 등 기능과 함께
 
-    백신 **접종 예약 조회/추가/수정/삭제** 할 수 있습니다.
+  백신 **접종 예약 조회/추가/수정/삭제** 할 수 있습니다.
 
-👉 [GitHub Link](https://github.com/geesuee/vaccine_reservation)
+👉 [Notion Link](https://fate-riverbed-f96.notion.site/541f8815144240c782c545605654153f)
+</br>
+</br>
 
 ## 📅 프로젝트 진행 타임라인
 ![123](https://user-images.githubusercontent.com/87046726/130897224-45b8915a-69d1-4282-8272-83fb65231910.png)
----
-
-[주제 선정 및 DB 설계](https://www.notion.so/DB-34c5c49d4fb349bc888a821b24e26543)
-
-[MVC 패턴 프로젝트 생성](https://www.notion.so/MVC-56d3ab18d90347c9835330c538a0ae49)
-
-[Entity별 CRUD 메소드 개별 구현](https://www.notion.so/Entity-CRUD-4a1b5dda14ab4182be16c385b01aa4bb)
-
-[git 활용 코드 통합](https://www.notion.so/git-b8b70dc45e9f424db6377f48f139474b)
-
-[코드 리뷰 및 리팩토링](https://www.notion.so/028cb9c6d53346fc958688d636a25b9e)
+</br>
+</br>
 
 # 1. Database Modeling
 ![vaccine](https://user-images.githubusercontent.com/87046726/130896827-09de983e-03d5-44dd-9ed0-82287bc1be20.png)
 
 ![테이블 스키마](https://user-images.githubusercontent.com/87046726/130896891-780f45d6-1d3d-436a-935a-bbe9aeea8872.png)
+</br>
+</br>
 
 # 2. SQL
-
 - DDL
 
     ```sql
@@ -71,7 +61,6 @@
     alter table Users add constraint Hospital foreign key (hospital_name) references Hospital;
     alter table Users add constraint Vaccine foreign key (vaccine_name) references Vaccine;
     ```
-
 - DML
 
     ```sql
@@ -90,9 +79,10 @@
 
     COMMIT;
     ```
+</br>
+</br>
 
 # 4. Function
-
 - Vaccine-Project flow
 
     ![Untitled Diagram (2)](https://user-images.githubusercontent.com/87046726/130896982-b9b43d61-c1b5-48fb-9d54-1d24fb63d598.png)
@@ -108,38 +98,29 @@
 - `updateHospitalVaccine()` : {병원 이름, 백신 이름}으로 해당 병원 보유 특정 백신 수량 수정
 - `deleteHospital()` : {병원 이름}으로 병원 정보 삭제
 
-- **VaccineController : 백신 관련 기능**
-    - `getAllVaccine()` : 백신 정보 전체 조회
-    - `getVaccine()` : {백신 이름}으로 단일 백신 정보 조회
-    - `updateVaccine()` : {백신 이름}으로 해당 백신 플랫폼, 보관 온도 수정
-    - `updateVaccineTargetAge()` : {백신 이름}으로 해당 백신 접종 연령 수정
-    - `~~addVaccine()` : 새로운 백신 저장~~
-    - `~~deleteVaccine()` : {백신 이름}으로 백신 정보 삭제~~
+**VaccineController : 백신 관련 기능**
+- `getAllVaccine()` : 백신 정보 전체 조회
+- `getVaccine()` : {백신 이름}으로 단일 백신 정보 조회
+- `updateVaccine()` : {백신 이름}으로 해당 백신 플랫폼, 보관 온도 수정
+- `updateVaccineTargetAge()` : {백신 이름}으로 해당 백신 접종 연령 수정
+- `~~addVaccine()` : 새로운 백신 저장~~
+- `~~deleteVaccine()` : {백신 이름}으로 백신 정보 삭제~~
 
-- **UsersController : 접종 예약자 관련 기능**
-    - `getAllUsers()` : 접종 예약자 정보 전체 조회
-    - `getAllUsersByHospital()` : {병원 이름}으로 해당 병원 접종 예약자 정보 다중 조회
-    - `getVaccineDate()` : {주민등록 번호}로 접종 예약 일자 조회
-    - `addUser()` : 새로운 접종 예약자 저장(=접종 예약)
-    - `updateUserDate()` : {주민등록 번호}로 해당 접종 예약자의 1차/2차(선택) 접종 날짜 수정
-    - `updateUserAddress()` : {주민등록 번호}로 해당 접종 예약자 주소 수정
-    - `deleteUser()` : {주민등록 번호}로 접종 예약자 삭제(=접종 예약 취소)
-
-## 🕳💨 트러블 슈팅
-
----
-
-- 데이터를 수정하고자 할 때 해당 객체를 찾아서 반환해주는 메소드를 이용하였는데 이 때 해당 객체가 아닌 객체의 값만 가져온 것을 반환받았기 때문에 수정에 성공했다고 떴지만 수정하려고 했던 객체의 값은 수정이 되지 않았었습니다. 그래서 반환받지 않고 직접 해당 객체를 찾아서 값을 수정해주었습니다.
-
-- 예약하려고 할 때 맞을수 있는 백신과 같은 지역에 있는 병원만 예약가능하게 구성하려고 함 그래서 List에서 포함된 것만 비교할 수 있게 contain을 사용하였지만 되지 않아 방법을 찾지 못하고 for문과 if문을 활용해서 코드를 구성함
+**UsersController : 접종 예약자 관련 기능**
+- `getAllUsers()` : 접종 예약자 정보 전체 조회
+- `getAllUsersByHospital()` : {병원 이름}으로 해당 병원 접종 예약자 정보 다중 조회
+- `getVaccineDate()` : {주민등록 번호}로 접종 예약 일자 조회
+- `addUser()` : 새로운 접종 예약자 저장(=접종 예약)
+- `updateUserDate()` : {주민등록 번호}로 해당 접종 예약자의 1차/2차(선택) 접종 날짜 수정
+- `updateUserAddress()` : {주민등록 번호}로 해당 접종 예약자 주소 수정
+- `deleteUser()` : {주민등록 번호}로 접종 예약자 삭제(=접종 예약 취소)
+</br>
+</br>
 
 ## 🚩 아쉬운 점 / 미흡한 점
+- **정규화가 미흡한 DB 설계**
 
----
-
-- DB 설계 시 검색의 용이성을 고려,
-
-    병원 테이블 내 **병원 정보와 백신 개수 정보 혼재**, 접종 예약자 테이블 내 **예약자 개인정보와 예약 정보 혼재 (정규화 미흡)**
+    DB 설계 시 검색의 용이성을 고려,  병원 테이블 내 **병원 정보와 백신 개수 정보 혼재**, 접종 예약자 테이블 내 **예약자 개인정보와 예약 정보 혼재 (정규화 미흡)**
 
     → 백신을 새로 추가하거나 삭제할 시 병원 테이블을 수정할 수 없어 백신 수정 사항 반영 불가
 
@@ -159,11 +140,9 @@
 
     *따로 분리하여 테이블을 만들어야 위와 같은 문제가 발생하지 않는다.*
 
-- **서비스 사용자와 구현 기능을 명확하게 정해두고 코드 작성을 시작하지 못한 점**
+- **서비스 사용자와 구현 기능의 지속적인 수정으로 코드 작성 비효율 발생**
 
-    최종 구현 기능을 정해두고, 해당 기능에 필요한 메소드만을 요구사항에 맞춰 작성했으면 좋았을텐데, 그러지 않아서
-
-    최종적으로 Controller를 합치고, StartView와 연결하는 과정에서
+    최종 구현 기능을 정해두고, 해당 기능에 필요한 메소드만을 요구사항에 맞춰 작성했으면 좋았을텐데, 그러지 않아서 최종적으로 Controller를 합치고, StartView와 연결하는 과정에서
 
     - 메소드를 새로 만들거나
     - 기존의 메소드를 사용하지 않거나
@@ -173,18 +152,17 @@
 
     입출력 값을 받아 사용자 화면을 구성하는 부분에서 **Controller 안 메소드와 DAO 안 메소드를 혼재하여 사용하게 되는 문제**가 발생함...😥
 
-- 깃허브를 활용한 협업의 어려움
+- **깃허브를 활용한 협업의 어려움**
 
     → 각자 branch에 자신의 코드를 push한 뒤 pull request를 통해 한 개 branch로 합치는 과정에서
 
     1. branch를 삭제하고 재생성하면서 각 branch의 history가 달라져 merge 불가
     2. 여러 사람이 동일한 파일을 수정하는 경우가 있어 merge시 confict 다수 발생
     3. 수정 전 코드를 pull하여 작업 후 (수정 전 코드라는 사실을 모르고) 제일 먼저 merge해서 수정 사항 증발..
+</br>
+</br>
 
 ## 👥 팀 구성원
-
----
-
 - 곽형림 ([https://github.com/gudfla1815](https://github.com/gudfla1815))
 - 유영훈 ([https://github.com/yyhhha](https://github.com/yyhhha))
 - 배지수 ([https://github.com/geesuee](https://github.com/geesuee))
