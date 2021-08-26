@@ -103,8 +103,8 @@
 - `getVaccine()` : {백신 이름}으로 단일 백신 정보 조회
 - `updateVaccine()` : {백신 이름}으로 해당 백신 플랫폼, 보관 온도 수정
 - `updateVaccineTargetAge()` : {백신 이름}으로 해당 백신 접종 연령 수정
-- `~~addVaccine()` : 새로운 백신 저장~~
-- `~~deleteVaccine()` : {백신 이름}으로 백신 정보 삭제~~
+- ~~`addVaccine()` : 새로운 백신 저장~~
+- ~~`deleteVaccine()` : {백신 이름}으로 백신 정보 삭제~~
 
 **UsersController : 접종 예약자 관련 기능**
 - `getAllUsers()` : 접종 예약자 정보 전체 조회
