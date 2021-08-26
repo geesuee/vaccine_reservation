@@ -1,209 +1,205 @@
-package controller;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
-import model.dao.HospitalDAO;
-import model.entity.Hospital;
-import model.entity.Vaccine;
-import view.EndView;
-
-public class HospitalController {
-
-	private static HospitalController instance = new HospitalController();
-
-	private HospitalController() {};
-
-	public static HospitalController getInstance() {
-		return instance;
-	}
-	
-	/** 
-	 * Hospital Controller
-	 * - getAllHospital
-	 * - getHospital
-	 * - getHospitalLocation
-	 * - getHospitalVaccine
-	 * - addHospital
-	 * - updateHospital
-	 * - updateHospitalLocation
-	 * - updateHospitalAllVaccine
-	 * - updateHospitalVaccine
-	 * - deleteHospital
-	 */
-	
-	//모든 병원 검색
-	public void getAllHospital(){
-		List<Hospital> hos = HospitalDAO.getAllHospital();
-		
-		if(hos.size() > 0) {
-			EndView.showAll(hos);
-		}else {
-			EndView.errorMessage("병원이 하나도 없습니다");
-		}
-	}
-	
-	//병원 이름으로 병원 검색
-	public void getHospital(String hospitalName) {
-		if(hospitalName != null && !hospitalName.equals("")) {
-			Hospital hos = HospitalDAO.getHospitalByName(hospitalName);
-			
-			if(hos != null) {
-				EndView.showOne(hos);
-			}else {
-				EndView.errorMessage("검색한 이름의 병원은 존재하지 않습니다");
-			}
-		}else {
-			EndView.nullMessage();	
-		}
-	}
-	
-	//병원 이름으로 병원 반환
-	public Hospital getHospitalName(String hospitalName) {
-		return HospitalDAO.getHospitalByName(hospitalName);
-	}
-	
-	//지역으로 병원 검색
-	public void getHospitalLocation(String location) {
-		if(location != null && !location.equals("")) {
-			List<Hospital> hos = HospitalDAO.getHospitalByLocation(location);
-			
-			if(hos != null) {
-				EndView.showAll(hos);
-			}else {
-				EndView.errorMessage("검색한 지역에 있는 병원이 없습니다");
-			}
-		}else {
-			EndView.nullMessage();
-		}
-	}
-	
-	//백신이 있는 병원 검색
-	public void getHospitalVaccine(String vaccineName) {
-		if(vaccineName != null && !vaccineName.equals("")) {
-			ArrayList<Hospital> hos = HospitalDAO.getHospitalByVaccine(vaccineName);
-			
-			if(hos.size() > 0) {
-				EndView.showAll(hos);
-			}else {
-				EndView.errorMessage("해당하는 백신이 있는 병원이 하나도 없습니다");
-			}
-		}else {
-			EndView.nullMessage();
-		}
-	}
-	
-	//해당하는 백신이 있고 주소가 같은 병원 반환
-	public HashSet<Hospital> getReservationHospital(List<Vaccine> vaccine, String location){
-		List<Hospital> hospital = HospitalDAO.getHospitalByLocation(location);
-		ArrayList<Hospital> hos = HospitalDAO.getHospitalByVaccine(vaccine);
-		HashSet<Hospital> result = new HashSet<>();
-		
-		for(Hospital h : hospital) {
-			for(int i=0; i<hos.size(); i++) {
-				if(h.getHospitalName().equals(hos.get(i).getHospitalName())) {
-					result.add(h);
-				}
-			}
-		}
-		
-		return result;
-	}
-	
-	//해당 백신 수량 반환
-	public int getHospitalVaccineTotal(String hospitalName, String vaccineName) {
-		return HospitalDAO.getHospitalVaccineTotal(hospitalName, vaccineName);
-	}
-	
-	//새로운 병원 저장
-	public void addHospital(Hospital hospital) {
-		if(hospital != null) {
-			boolean result = HospitalDAO.addHospital(hospital);
-			
-			if(result == true) {
-				EndView.successMessage("병원 : " + hospital.getHospitalName() + "] 저장");
-			}else {
-				EndView.failMessage("병원 : " + hospital.getHospitalName() + "] 저장");
-			}
-		}else {
-			EndView.errorMessage("해당 병원은 존재하지 않습니다");  // 보류
-		}
-	}
-	
-	//병원 이름으로 모든 병원 정보 수정
-	public void updateHospital(String hospitalName, String location, int pfizer, int moderna, int az) {
-		if(hospitalName != null && !hospitalName.equals("") && location != null && !location.equals("")) {
-			boolean result1 = HospitalDAO.updateHospitalLocation(hospitalName, location);
-			boolean result2 = HospitalDAO.updateHospitalAllVaccine(hospitalName, pfizer, moderna, az);
-			
-			if(result1 == true && result2 == true) {
-				EndView.successMessage("병원 : " + hospitalName + "] 정보 수정");
-			}else {
-				EndView.failMessage("병원 : " + hospitalName + "] 정보 수정");
-			}
-		}else {
-			EndView.nullMessage();
-		}
-	}
-	
-	//병원 이름으로 지역 수정
-	public void updateHospitalLocation(String hospitalName, String location) {
-		if(hospitalName != null && !hospitalName.equals("") && location != null && !location.equals("")) {
-			boolean result = HospitalDAO.updateHospitalLocation(hospitalName, location);
-			
-			if(result == true) {
-				EndView.successMessage("병원 : " + hospitalName + "] 지역 정보 수정");
-			}else {
-				EndView.failMessage("병원 : " + hospitalName + "] 지역 정보 수정");
-			}
-		}else {
-			EndView.nullMessage();
-		}
-	}
-	
-	//병원 이름으로 모든 백신 수량 수정
-	public void updateHospitalAllVaccine(String hospitalName, int pfizer, int moderna, int az) {
-		if(hospitalName != null && !hospitalName.equals("")) {
-			boolean result = HospitalDAO.updateHospitalAllVaccine(hospitalName, pfizer, moderna, az);
-			
-			if(result == true) {
-				EndView.successMessage("병원 : " + hospitalName + "] 백신 정보 수정");
-			}else {
-				EndView.failMessage("병원 : " + hospitalName + "] 백신 정보 수정");
-			}
-		}else {
-			EndView.nullMessage();
-		}
-	}
-	
-	//병원 이름으로 백신 수량 수정
-	public void updateHospitalVaccine(String hospitalName, String vaccineName, int num) {
-		if(hospitalName != null && !hospitalName.equals("") && vaccineName != null && !vaccineName.equals("")) {
-			boolean result = HospitalDAO.updateHospitalVaccine(hospitalName, vaccineName, num);
-			
-			if(result == true) {
-				EndView.successMessage("병원 : " + hospitalName + "] 백신 [" + vaccineName +"] 정보 수정");
-			}else {
-				EndView.failMessage("병원 : " + hospitalName + "] 백신 [" + vaccineName +"] 정보 수정");
-			}
-		}else {
-			EndView.nullMessage();
-		}
-	}
-	
-	//병원 이름으로 병원 삭제
-	public void deleteHospital(String hospitalName) {
-		if(hospitalName != null && !hospitalName.equals("")) {
-			boolean result = HospitalDAO.deleteHospital(hospitalName);
-			
-			if(result == true) {
-				EndView.successMessage("병원 : " + hospitalName + "] 삭제");
-			}else {
-				EndView.failMessage("병원 : " + hospitalName + "] 삭제");
-			}
-		}else {
-			EndView.nullMessage();
-		}
-	}
-}
+//package controller;
+//
+//import java.util.ArrayList;
+//import java.util.HashSet;
+//import java.util.List;
+//
+//import model.dao.HospitalDAO;
+//import model.entity.Hospital;
+//import model.entity.Vaccine;
+//import view.EndView;
+//
+//public class HospitalController {
+//
+//	private static HospitalController instance = new HospitalController();
+//
+//	private HospitalController() {};
+//
+//	public static HospitalController getInstance() {
+//		return instance;
+//	}
+//	
+//	/** 
+//	 * Hospital Controller
+//	 * - getAllHospital
+//	 * - getHospital
+//	 * - **getHospitalName
+//	 * - getHospitalByLocation
+//	 * - getHospitalVaccine
+//	 * - **getReservationHospital
+//	 * - **getHospitalVaccineTotal
+//	 * - addHospital
+//	 * - updateHospital
+//	 * - updateHospitalLocation
+//	 * - updateHospitalAllVaccine
+//	 * - updateHospitalVaccine
+//	 * - deleteHospital
+//	 */
+//	
+//
+//	public void getAllHospital(){
+//		List<Hospital> hospitalList = HospitalDAO.getAllHospital();
+//		
+//		if(hospitalList.size() > 0) {
+//			EndView.showAll(hospitalList);
+//		}else {
+//			EndView.errorMessage("병원 정보가 존재하지 않습니다.");
+//		}
+//	}
+//	
+//
+//	public void getHospital(String hospitalName) {
+//		if(hospitalName != null && !hospitalName.equals("")) {
+//			Hospital hospital = HospitalDAO.getHospitalByName(hospitalName);
+//			
+//			if(hospital != null) {
+//				EndView.showOne(hospital);
+//			}else {
+//				EndView.errorMessage("해당 이름의 병원 정보가 존재하지 않습니다.");
+//			}
+//		}else {
+//			EndView.nullMessage();	
+//		}
+//	}
+//	
+//
+////	public Hospital getHospitalName(String hospitalName) {
+////		return HospitalDAO.getHospitalByName(hospitalName);
+////	}
+//	
+//
+//	public void getHospitalByLocation(String location) {
+//		if(location != null && !location.equals("")) {
+//			List<Hospital> hospitalList = HospitalDAO.getHospitalByLocation(location);
+//			
+//			if(hospitalList != null) {
+//				EndView.showAll(hospitalList);
+//			}else {
+//				EndView.errorMessage("해당 지역에 위치한 병원 정보가 존재하지 않습니다.");
+//			}
+//		}else {
+//			EndView.nullMessage();
+//		}
+//	}
+//	
+//	public void getHospitalByVaccineName(String vaccineName) {
+//		if(vaccineName != null && !vaccineName.equals("")) {
+//			ArrayList<Hospital> hospitalList = HospitalDAO.getHospitalByVaccineName(vaccineName);
+//			
+//			if(hospitalList.size() > 0) {
+//				EndView.showAll(hospitalList);
+//			}else {
+//				EndView.errorMessage("해당 백신을 보유한 병원 정보가 존재하지 않습니다.");
+//			}
+//		}else {
+//			EndView.nullMessage();
+//		}
+//	}
+//	
+////	//해당하는 백신이 있고 주소가 같은 병원 반환
+////	public HashSet<Hospital> getReservationHospital(List<Vaccine> vaccine, String location){
+////		List<Hospital> hospital1 = HospitalDAO.getHospitalByLocation(location);
+////		List<Hospital> hospital2 = HospitalDAO.getHospitalByVaccine(vaccine);
+////		HashSet<Hospital> result = new HashSet<>();
+////		
+////		for(Hospital h : hospital1) {
+////			for(int i=0; i<hospital2.size(); i++) {
+////				if(h.getHospitalName().equals(hospital2.get(i).getHospitalName())) {
+////					result.add(h);
+////				}
+////			}
+////		}
+////		return result;
+////	}
+//	
+//	//해당 백신 수량 반환
+////	public int getHospitalVaccineTotal(String hospitalName, String vaccineName) {
+////		return HospitalDAO.getHospitalVaccineTotal(hospitalName, vaccineName);
+////	}
+////	
+////
+//	public void addHospital(Hospital hospital) {
+//		if(hospital != null) {
+//			
+//			if(HospitalDAO.addHospital(hospital)) {
+//				EndView.successMessage("병원 : " + hospital.getHospitalName() + "] 저장");
+//			}else {
+//				EndView.failMessage("병원 : " + hospital.getHospitalName() + "] 저장");
+//			}
+//		}else {
+//			EndView.nullMessage();
+//		}
+//	}
+//	
+//
+//	public void updateHospital(String hospitalName, String location, int pfizer, int moderna, int az) {
+//		if(hospitalName != null && !hospitalName.equals("") && location != null && !location.equals("")) {
+//			boolean result1 = HospitalDAO.updateHospitalLocation(hospitalName, location);
+//			boolean result2 = HospitalDAO.updateHospitalAllVaccine(hospitalName, pfizer, moderna, az);
+//			
+//			if(result1 && result2) {
+//				EndView.successMessage("병원 : " + hospitalName + "] 정보 수정");
+//			}else {
+//				EndView.failMessage("병원 : " + hospitalName + "] 정보 수정");
+//			}
+//		}else {
+//			EndView.nullMessage();
+//		}
+//	}
+//	
+//
+//	public void updateHospitalLocation(String hospitalName, String location) {
+//		if(hospitalName != null && !hospitalName.equals("") && location != null && !location.equals("")) {
+//			
+//			if(HospitalDAO.updateHospitalLocation(hospitalName, location)) {
+//				EndView.successMessage("병원 : " + hospitalName + "] 지역 정보 수정");
+//			}else {
+//				EndView.failMessage("병원 : " + hospitalName + "] 지역 정보 수정");
+//			}
+//		}else {
+//			EndView.nullMessage();
+//		}
+//	}
+//	
+//
+//	public void updateHospitalAllVaccine(String hospitalName, int pfizer, int moderna, int az) {
+//		if(hospitalName != null && !hospitalName.equals("")) {
+//			
+//			if(HospitalDAO.updateHospitalAllVaccine(hospitalName, pfizer, moderna, az)) {
+//				EndView.successMessage("병원 : " + hospitalName + "] 백신 정보 수정");
+//			}else {
+//				EndView.failMessage("병원 : " + hospitalName + "] 백신 정보 수정");
+//			}
+//		}else {
+//			EndView.nullMessage();
+//		}
+//	}
+//	
+//
+//	public void updateHospitalVaccine(String hospitalName, String vaccineName, int num) {
+//		if(hospitalName != null && !hospitalName.equals("") && vaccineName != null && !vaccineName.equals("")) {
+//			
+//			if(HospitalDAO.updateHospitalVaccine(hospitalName, vaccineName, num)) {
+//				EndView.successMessage("병원 : " + hospitalName + "] 백신 [" + vaccineName +"] 정보 수정");
+//			}else {
+//				EndView.failMessage("병원 : " + hospitalName + "] 백신 [" + vaccineName +"] 정보 수정");
+//			}
+//		}else {
+//			EndView.nullMessage();
+//		}
+//	}
+//	
+//
+//	public void deleteHospital(String hospitalName) {
+//		if(hospitalName != null && !hospitalName.equals("")) {
+//			
+//			if(HospitalDAO.deleteHospital(hospitalName)) {
+//				EndView.successMessage("병원 : " + hospitalName + "] 삭제");
+//			}else {
+//				EndView.failMessage("병원 : " + hospitalName + "] 삭제");
+//			}
+//		}else {
+//			EndView.nullMessage();
+//		}
+//	}
+//}
