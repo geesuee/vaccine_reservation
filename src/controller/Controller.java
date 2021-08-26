@@ -148,7 +148,7 @@ public class Controller {
 
 						HashSet<Hospital> hospitalSet = getReservationHospital(vaccineList, address);
 						if (hospitalSet.size() == 0) {
-							System.out.println("\n해당 백신을 보유한 인근 병원이 없습니다.");
+							EndView.errorMessage("\n해당 백신을 보유한 인근 병원이 없습니다.");
 							inputNum = 100;
 							continue loop1;
 						}
@@ -156,12 +156,22 @@ public class Controller {
 						hospitalSet.forEach(System.out::println);
 						System.out.println("\n■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
 
+						
 						/** contain을 쓰려던 두 부분
 						 * 
 						 * - 예약자 연령이 접종 가능한 백신 리스트 vaccineList
-						 * - 예약자 주소지 인근, 위 백신을 보유하고 있는 병원 리스트 hospitalList
+						 * - 예약자 주소지 인근, 위 백신을 보유하고 있는 병원 셋 hospitalSet
 						 * 
+						 * - 사용자가 선택(입력)한 병원의 이름 sHospital / 해당 이름의 병원 selectHospital
+						 * - 사용자가 선택(입력)한 백신의 이름 sVaccine / 해당 이름의 백신 selectVaccine
 						 * 
+						 * 1) 사용자가 선택한 병원이 hospitalSet에 있는지 확인
+						 * 		- 있으면 계속 진행
+						 * 		- 없으면 에러 메세지 출력 후 윗 단계로 continue;
+						 * 
+						 * 2) 사용자가 선택한 백신이 vaccineList에 있는지 확인 + 사용자가 선택한 병원에 해당 백신이 1개 이상 있는지 확인
+						 * 		- 있으면 계속 진행
+						 * 		- 없으면 에러 메세지 출력 후 윗 단계로 continue;
 						 *  
 						 */
 						
@@ -169,12 +179,16 @@ public class Controller {
 						System.out.print("\n병원을 선택해주세요 : ");
 						String sHospital = br.readLine();
 						Hospital selectHospital = HospitalDAO.getHospitalByName(sHospital);
-
 						
+//						if(!hospitalSet.contains(selectHospital)) {
+//							EndView.errorMessage("\n해당 병원은 선택이 불가합니다.");
+//							inputNum = 100;
+//							continue loop1;
+//						}
 						
 						for (Hospital h : hospitalSet) {
 							if (!h.getHospitalName().equals(sHospital)) {
-								System.out.println("\n해당 병원은 선택이 불가합니다.");
+								EndView.errorMessage("\n해당 병원은 선택이 불가합니다.");
 								inputNum = 100;
 								continue loop1;
 							}
@@ -184,6 +198,12 @@ public class Controller {
 						String sVaccine = br.readLine();
 						Vaccine selectVaccine = VaccineDAO.getVaccine(sVaccine);
 
+//						if(!vaccineList.contains(selectVaccine) || HospitalDAO.getHospitalVaccine(sHospital, sVaccine) <= 0) {
+//							EndView.errorMessage("\n해당 백신은 선택이 불가합니다.");
+//							inputNum = 100;
+//							continue loop1;
+//						}
+						
 						boolean check = false;
 						
 						for(Vaccine v : vaccineList) {
@@ -211,7 +231,7 @@ public class Controller {
 
 							updateReservationVaccine(sHospital, sVaccine, -1);
 						}else {
-							EndView.errorMessage("\n해당 백신은 예약이 불가합니다.");
+							EndView.errorMessage("\n해당 백신은 선택이 불가합니다.");
 						}
 						
 						inputNum = 100;
