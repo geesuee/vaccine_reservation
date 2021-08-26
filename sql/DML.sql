@@ -1,14 +1,14 @@
-insert into Hospital values('»ï¼ºº´¿ø', '°­³²±¸', 2, 3, 3);
-insert into Hospital values('¼º½Éº´¿ø', '°­µ¿±¸', 1, 4, 4);
-insert into Hospital values('¾Æ»êº´¿ø', '¼ÛÆÄ±¸', 0, 4, 5);
+insert into Hospital values('ì‚¼ì„±ë³‘ì›', 'ê°•ë‚¨êµ¬', 2, 3, 3);
+insert into Hospital values('ì„±ì‹¬ë³‘ì›', 'ê°•ë™êµ¬', 1, 4, 4);
+insert into Hospital values('ì•„ì‚°ë³‘ì›', 'ì†¡íŒŒêµ¬', 0, 4, 5);
 
-insert into Vaccine values('È­ÀÌÀÚ', 12, 21, 'mRNA', '-90µµ ~ -60µµ', 6);
-insert into Vaccine values('¸ğ´õ³ª', 18, 28, 'mRNA', '-25µµ ~ -15µµ', 7);
-insert into Vaccine values('AZ', 30, 56, '¹ÙÀÌ·¯½º º¤ÅÍ', '2µµ ~ 8µµ', 6);
+insert into Vaccine values('í™”ì´ì', 12, 21, 'mRNA', '-90ë„ ~ -60ë„', 6);
+insert into Vaccine values('ëª¨ë”ë‚˜', 18, 28, 'mRNA', '-25ë„ ~ -15ë„', 7);
+insert into Vaccine values('AZ', 30, 56, 'ë°”ì´ëŸ¬ìŠ¤ ë²¡í„°', '2ë„ ~ 8ë„', 6);
 
-insert into Users values(960916, '°ûÇü¸²', 15, '°­³²±¸', '20210814', '20210903', 'È­ÀÌÀÚ', '»ï¼ºº´¿ø');
-insert into Users values(940804, 'À¯¿µÈÆ', 19, '°­µ¿±¸', '20210823', '20210919', '¸ğ´õ³ª', '¼º½Éº´¿ø');
-insert into Users values(971202, '¹èÁö¼ö', 31, '¼ÛÆÄ±¸', '20210723', '20210916', 'AZ', '¾Æ»êº´¿ø');
-insert into Users values(990523, '±èÇı°æ', 20, '°­³²±¸', '20210814', '20210903', 'È­ÀÌÀÚ', '»ï¼ºº´¿ø');
+insert into Users values(960916, 'ê³½í˜•ë¦¼', 15, 'ê°•ë‚¨êµ¬', '20210814', '20210903', 'í™”ì´ì', 'ì‚¼ì„±ë³‘ì›');
+insert into Users values(940804, 'ìœ ì˜í›ˆ', 19, 'ê°•ë™êµ¬', '20210823', '20210919', 'ëª¨ë”ë‚˜', 'ì„±ì‹¬ë³‘ì›');
+insert into Users values(971202, 'ë°°ì§€ìˆ˜', 31, 'ì†¡íŒŒêµ¬', '20210723', '20210916', 'AZ', 'ì•„ì‚°ë³‘ì›');
+insert into Users values(990523, 'ê¹€í˜œê²½', 20, 'ê°•ë‚¨êµ¬', '20210814', '20210903', 'í™”ì´ì', 'ì‚¼ì„±ë³‘ì›');
 
 COMMIT;
