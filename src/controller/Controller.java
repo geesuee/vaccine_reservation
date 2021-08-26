@@ -156,6 +156,16 @@ public class Controller {
 						hospitalSet.forEach(System.out::println);
 						System.out.println("\n■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
 
+						/** contain을 쓰려던 두 부분
+						 * 
+						 * - 예약자 연령이 접종 가능한 백신 리스트 vaccineList
+						 * - 예약자 주소지 인근, 위 백신을 보유하고 있는 병원 리스트 hospitalList
+						 * 
+						 * 
+						 *  
+						 */
+						
+						
 						System.out.print("\n병원을 선택해주세요 : ");
 						String sHospital = br.readLine();
 						Hospital selectHospital = HospitalDAO.getHospitalByName(sHospital);
