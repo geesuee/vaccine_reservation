@@ -129,13 +129,16 @@ public class UsersDAO {
 			userList = em.createNamedQuery("Users.findByUserName").setParameter("name", name).getResultList();
 
 			if (userList.size() == 1) {
-				return userList.get(0);
-			} else {
+				Users user = getUserById(idNum);
+				if(user != null) {
+					return userList.get(0);					
+				}
+			}else if(userList.size() > 1) {
 				return getUserById(idNum);
 			}
-		} catch (Exception e) {
+		}catch (Exception e) {
 //			e.printStackTrace();
-		} finally {
+		}finally {
 			em.close();
 			em = null;
 		}
@@ -154,9 +157,9 @@ public class UsersDAO {
 			if (user != null) {
 				return user;
 			}
-		} catch (Exception e) {
+		}catch (Exception e) {
 //			e.printStackTrace();
-		} finally {
+		}finally {
 			em.close();
 			em = null;
 		}
@@ -177,10 +180,10 @@ public class UsersDAO {
 
 			tx.commit();
 			result = true;
-		} catch (Exception e) {
+		}catch (Exception e) {
 			tx.rollback();
 //			e.printStackTrace();
-		} finally {
+		}finally {
 			em.close();
 			em = null;
 		}
@@ -217,7 +220,7 @@ public class UsersDAO {
 					}
 
 					// 2차 접종일 변경
-				} else if (dateNum == 2) {
+				}else if (dateNum == 2) {
 					LocalDate maxDate = date1.plusMonths(3);
 
 					if (date2.isAfter(todaysDate) && newDate.isAfter(date2) && newDate.isAfter(todaysDate)
@@ -230,10 +233,10 @@ public class UsersDAO {
 				}
 			}
 
-		} catch (Exception e) {
+		}catch (Exception e) {
 			tx.rollback();
 //			e.printStackTrace();
-		} finally {
+		}finally {
 			em.close();
 			em = null;
 		}
@@ -273,10 +276,10 @@ public class UsersDAO {
 			}
 
 			tx.commit();
-		} catch (Exception e) {
+		}catch (Exception e) {
 			tx.rollback();
 //			e.printStackTrace();
-		} finally {
+		}finally {
 			em.close();
 			em = null;
 		}
@@ -301,10 +304,10 @@ public class UsersDAO {
 			}
 
 			tx.commit();
-		} catch (Exception e) {
+		}catch (Exception e) {
 			tx.rollback();
 //			e.printStackTrace();
-		} finally {
+		}finally {
 			em.close();
 			em = null;
 		}
