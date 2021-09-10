@@ -16,6 +16,8 @@
 - `OracleDB`
 - `JPA` / `Lombok`
 - `JUnit5`
+</br>
+</br>
 
 ## 📅 프로젝트 진행 타임라인
 ![123](https://user-images.githubusercontent.com/87046726/130897224-45b8915a-69d1-4282-8272-83fb65231910.png)
